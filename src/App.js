@@ -9,7 +9,7 @@ function App() {
       <header className="App-header">
         <p>Fit Car</p>
       </header>
-      <AddMileageForm />
+      <AddMileageForm carId={1} />
       <ReadMileage />
     </div>
   );
