@@ -3,6 +3,9 @@ import NumberIncrementer from "./NumberIncrementer";
 import styles from "./AddMileageForm.module.css";
 import { useState, useEffect } from "react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUndo, faPlus } from "@fortawesome/free-solid-svg-icons";
+
 export function AddNewMileage({ carId }) {
   const [mileageValue, setMileage] = useState(0);
   const [previousMileage, setPreviousMileage] = useState(0);
@@ -21,7 +24,11 @@ export function AddNewMileage({ carId }) {
   console.log(mileageValue);
   // split the known value into digits, so convert value to string
   // then split the values up by digit
-  let stringifiedValue = "0" + mileageValue.toString().padStart(6, "0");
+  let stringifiedValue = mileageValue.toString().padStart(6, "0");
+  if (stringifiedValue.length < 8) {
+    // we add the zero to the front to enable overflows
+    stringifiedValue = "0" + stringifiedValue;
+  }
 
   const incrementNumber = (baseValue, index) => {
     const newValue = baseValue + Math.pow(10, index);
@@ -56,6 +63,10 @@ export function AddNewMileage({ carId }) {
       );
   };
 
+  const undoMileage = () => {
+    setMileage(previousMileage);
+  };
+
   return (
     <>
       <div className={styles.mileageIncrementer}>
@@ -80,23 +91,31 @@ export function AddNewMileage({ carId }) {
             />
           );
         })}
-        <button
-          className={styles.saveButton}
-          onClick={() => {
-            addMileage(mileageValue);
-          }}
-        >
-          Add
-        </button>
       </div>
 
-      {mileageValue !== 0 && mileageValue !== previousMileage ? (
+      <button
+        className={styles.saveButton}
+        onClick={() => {
+          addMileage(mileageValue);
+        }}
+      >
+        <FontAwesomeIcon icon={faPlus} /> Add
+      </button>
+      <div
+        className={[
+          styles.mileageSummary,
+          mileageValue !== 0 && mileageValue !== previousMileage
+            ? ""
+            : styles.invisible,
+        ].join(" ")}
+      >
         <div>{`You drove ${mileageValue - previousMileage} km${
           mileageValue - previousMileage !== 1 ? "s" : ""
         } today`}</div>
-      ) : (
-        ""
-      )}
+        <button className={styles.undoButton} onClick={undoMileage}>
+          <FontAwesomeIcon icon={faUndo} /> Undo
+        </button>
+      </div>
     </>
   );
 }

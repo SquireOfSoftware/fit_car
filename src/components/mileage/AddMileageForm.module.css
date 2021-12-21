@@ -1,20 +1,43 @@
-.mileageIncrementer {
+.mileageIncrementer,
+.mileageSummary {
   display: flex;
   justify-content: center;
   gap: 1em;
 }
 
-.saveButton {
+.saveButton,
+.undoButton {
+  margin-top: 10px;
   border: none;
-  cursor: pointer;
   height: 3em;
-  width: 4em;
   align-self: center;
   transition: 0.3s;
+}
+
+.saveButton:hover,
+.undoButton:hover {
+  background-color: gray;
+  color: white;
+}
+
+.undoButton {
+  background-color: orange;
+  width: initial;
   border-radius: 5px;
 }
 
-.saveButton:hover {
-  background-color: gray;
+.saveButton {
+  width: 100%;
+  background-color: rgb(37, 147, 238);
   color: white;
+}
+
+.mileageSummary {
+  align-items: center;
+  transition: 0.3s;
+}
+
+.invisible {
+  opacity: 0;
+  visibility: hidden;
 }
