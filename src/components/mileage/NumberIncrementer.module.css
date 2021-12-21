@@ -1,0 +1,31 @@
+.invisible {
+  opacity: 0;
+}
+
+.digitIncrementer {
+  display: flex;
+  flex-direction: column;
+}
+
+.plus,
+.minus {
+  transition: 0.3s;
+  cursor: pointer;
+  padding: 0.5em;
+  border-radius: 5px;
+  border: none;
+  background-color: white;
+}
+
+.plus:hover,
+.minus:hover {
+  opacity: 1;
+  background-color: gray;
+  color: white;
+  transform: scale(1.2);
+}
+
+.digit {
+  padding: 1em;
+  width: 1em;
+}

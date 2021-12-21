@@ -1,57 +1,102 @@
 import { db } from "./../../db/DB";
-import { useForm } from "react-hook-form";
+import NumberIncrementer from "./NumberIncrementer";
+import styles from "./AddMileageForm.module.css";
+import { useState, useEffect } from "react";
 
-export default function AddMileageForm(props) {
-  const {
-    register,
-    setValue,
-    getValues,
-    handleSubmit,
-    formState: { isValid },
-  } = useForm({
-    mode: "onChange",
-  });
+export function AddNewMileage({ carId }) {
+  const [mileageValue, setMileage] = useState(0);
+  const [previousMileage, setPreviousMileage] = useState(0);
 
-  async function addMileage(event) {
-    let carId = props.carId;
-    let currentMileage = parseInt(getValues("mileage"));
+  useEffect(() => {
+    db.mileage
+      .orderBy("timeUtc")
+      .reverse()
+      .first()
+      .then((value) => {
+        setMileage(value["currentMileage"]);
+        setPreviousMileage(value["currentMileage"]);
+      });
+  }, []);
+
+  console.log(mileageValue);
+  // split the known value into digits, so convert value to string
+  // then split the values up by digit
+  let stringifiedValue = "0" + mileageValue.toString().padStart(6, "0");
+
+  const incrementNumber = (baseValue, index) => {
+    const newValue = baseValue + Math.pow(10, index);
+    console.log({ newValue });
+    setMileage(newValue);
+  };
+
+  const decrementNumber = (baseValue, index) => {
+    let newValue = baseValue - Math.pow(10, index);
+    if (newValue < 0) {
+      newValue = 0;
+    }
+    console.log({ newValue });
+    setMileage(newValue);
+  };
+
+  const addMileage = (currentMileage) => {
     let timeUtc = Date.now();
 
-    try {
-      const id = await db.mileage.add({
+    db.mileage
+      .add({
         carId,
         currentMileage,
         timeUtc,
-      });
-      console.log(`db entry saved at ${id}`);
-    } catch (error) {
-      console.log(`Failed to write to the browser db: ${error}`);
-    }
-  }
-
-  const changeMileage = (event) => {
-    let value = event.target.value;
-    let numIsValid = !isNaN(value) && value.length > 0;
-    setValue("mileage", numIsValid ? parseInt(value) : undefined, {
-      shouldValidate: true,
-    });
+      })
+      .then((id) => {
+        console.log(`db entry saved at ${id}`);
+        setPreviousMileage(currentMileage);
+      })
+      .catch((error) =>
+        console.log(`Failed to write to the browser db: ${error}`)
+      );
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit(addMileage)}>
-        <div onClick={addMileage}>hello world</div>
-        <fieldset>
-          <label>Mileage: </label>
-          <input
-            {...register("mileage", { required: true })}
-            type="number"
-            id="mileage"
-            onChange={changeMileage}
-          />
-        </fieldset>
-        {isValid ? <input type="submit" /> : <input type="submit" disabled />}
-      </form>
+      <div className={styles.mileageIncrementer}>
+        {stringifiedValue.split("").map((character, index) => {
+          return (
+            <NumberIncrementer
+              key={index}
+              currentDigit={character}
+              isHidden={index < stringifiedValue.length - 3}
+              incrementDigit={() => {
+                incrementNumber(
+                  mileageValue,
+                  stringifiedValue.length - index - 1
+                );
+              }}
+              decrementDigit={() => {
+                decrementNumber(
+                  mileageValue,
+                  stringifiedValue.length - index - 1
+                );
+              }}
+            />
+          );
+        })}
+        <button
+          className={styles.saveButton}
+          onClick={() => {
+            addMileage(mileageValue);
+          }}
+        >
+          Add
+        </button>
+      </div>
+
+      {mileageValue !== 0 && mileageValue !== previousMileage ? (
+        <div>{`You drove ${mileageValue - previousMileage} km${
+          mileageValue - previousMileage !== 1 ? "s" : ""
+        } today`}</div>
+      ) : (
+        ""
+      )}
     </>
   );
 }

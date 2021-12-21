@@ -1,0 +1,20 @@
+.mileageIncrementer {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+.saveButton {
+  border: none;
+  cursor: pointer;
+  height: 3em;
+  width: 4em;
+  align-self: center;
+  transition: 0.3s;
+  border-radius: 5px;
+}
+
+.saveButton:hover {
+  background-color: gray;
+  color: white;
+}

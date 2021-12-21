@@ -1,5 +1,6 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "./../../db/DB";
+import MileageReadOut from "./MileageReadOut";
 
 export default function ReadMileage() {
   const storedData = useLiveQuery(() => {
@@ -15,8 +16,11 @@ export default function ReadMileage() {
     <div>
       {storedData?.map((entry) => (
         <div key={entry.id}>
-          {entry.carId} {entry.currentMileage}{" "}
-          {new Date(entry.timeUtc).toISOString()}
+          <MileageReadOut
+            id={entry.id}
+            mileage={entry.currentMileage}
+            timeUtc={entry.timeUtc}
+          />
         </div>
       ))}
     </div>

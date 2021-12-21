@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import "./App.css";
-import AddMileageForm from "./components/mileage/AddMileageForm";
+import AddMileageForm, {
+  AddNewMileage,
+} from "./components/mileage/AddMileageForm";
 import ReadMileage from "./components/mileage/ReadMileage";
 
 function App() {
@@ -9,7 +11,7 @@ function App() {
       <header className="App-header">
         <p>Fit Car</p>
       </header>
-      <AddMileageForm carId={1} />
+      <AddNewMileage carId={1} />
       <ReadMileage />
     </div>
   );
