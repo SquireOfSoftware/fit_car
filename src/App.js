@@ -1,15 +1,20 @@
-import "./App.css";
-import { AddNewMileage } from "./components/mileage/AddMileageForm";
-import ReadMileage from "./components/mileage/ReadMileage";
+import styles from "./App.module.css";
+import { Outlet, Link } from "react-router-dom";
+import { AddMileageButton } from "./components/mileage/AddMileageForm";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className={styles.app}>
+      <div className={styles.appHeader}>
         <p>Fit Car</p>
-      </header>
-      <AddNewMileage carId={1} />
-      <ReadMileage />
+      </div>
+      <nav className={styles.appNav}>
+        <Link to="/addMileage">
+          <AddMileageButton />
+        </Link>
+        <Link to="/readMileage">Read Mileage</Link>
+      </nav>
+      <Outlet />
     </div>
   );
 }

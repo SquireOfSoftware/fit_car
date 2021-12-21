@@ -42,3 +42,82 @@
   opacity: 0;
   visibility: hidden;
 }
+
+.addMileageButton {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  height: 15vmin;
+}
+
+.animatedCar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  height: 15vmin;
+  width: 80%;
+  align-self: center;
+  position: absolute;
+  border-radius: 5px;
+  background-color: lightblue;
+}
+
+.carIcon {
+  font-size: 2em;
+  align-self: flex-end;
+  position: absolute;
+  bottom: 2.5px;
+  color: black;
+  right: 20%;
+  animation: carJitter 0.1s linear infinite;
+}
+
+@keyframes carJitter {
+  from {
+    transform: translateY(2%);
+  }
+  to {
+    transform: translateY(-2%);
+  }
+}
+
+.grass {
+  background-color: lightslategray;
+  height: 5px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.mountain {
+  transform: translateX(500%);
+  border-left: 10vmin solid transparent;
+  border-right: 10vmin solid transparent;
+  border-bottom: 14vmin solid white;
+  position: absolute;
+  animation: movingMountain 5s linear infinite;
+}
+
+.leftMountain {
+  animation-delay: 0.7s;
+}
+
+@keyframes movingMountain {
+  from {
+    transform: translateX(500%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.mileageButtonText {
+  text-decoration: none;
+  color: black;
+  z-index: 1;
+  font-size: 2em;
+  align-self: flex-start;
+  margin-left: 10%;
+}

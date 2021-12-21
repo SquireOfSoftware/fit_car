@@ -4,7 +4,7 @@ import styles from "./AddMileageForm.module.css";
 import { useState, useEffect } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUndo, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faUndo, faPlus, faCarSide } from "@fortawesome/free-solid-svg-icons";
 
 export function AddNewMileage({ carId }) {
   const [mileageValue, setMileage] = useState(0);
@@ -116,5 +116,19 @@ export function AddNewMileage({ carId }) {
         </button>
       </div>
     </>
+  );
+}
+
+export function AddMileageButton() {
+  return (
+    <div className={styles.addMileageButton}>
+      <div className={styles.animatedCar}>
+        <div className={styles.mountain}></div>
+        <div className={[styles.mountain, styles.leftMountain].join(" ")}></div>
+        <div className={styles.grass}></div>
+        <FontAwesomeIcon className={styles.carIcon} icon={faCarSide} />
+        <div className={styles.mileageButtonText}>Add Mileage</div>
+      </div>
+    </div>
   );
 }
