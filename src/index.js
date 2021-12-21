@@ -3,10 +3,11 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Route, Routes, useRoutes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { AddNewMileage } from "./components/mileage/AddMileageForm";
 import ReadMileage from "./components/mileage/ReadMileage";
+import Report from "./components/events/Report";
 
 const rootElement = document.getElementById("root");
 
@@ -15,8 +16,9 @@ ReactDOM.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />}></Route>
-      <Route path="addMileage" element={<AddNewMileage carId={1} />} />
-      <Route path="readMileage" element={<ReadMileage carId={1} />} />
+      <Route path="mileage/add" element={<AddNewMileage carId={1} />} />
+      <Route path="mileage" element={<ReadMileage carId={1} />} />
+      <Route path="report" element={<Report carId={1} />} />
     </Routes>
   </BrowserRouter>,
   rootElement

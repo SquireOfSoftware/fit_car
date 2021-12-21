@@ -1,0 +1,28 @@
+.cardButton {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  height: 15vmin;
+}
+
+.animatedCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  height: 15vmin;
+  width: 80%;
+  align-self: center;
+  position: absolute;
+  border-radius: 5px;
+}
+
+.animatedCardText {
+  text-decoration: none;
+  color: black;
+  z-index: 1;
+  font-size: 2em;
+  align-self: flex-start;
+  margin-left: 10%;
+}

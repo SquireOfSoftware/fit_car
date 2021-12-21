@@ -43,24 +43,7 @@
   visibility: hidden;
 }
 
-.addMileageButton {
-  border: none;
-  display: flex;
-  flex-direction: column;
-  border-radius: 5px;
-  height: 15vmin;
-}
-
 .animatedCar {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow: hidden;
-  height: 15vmin;
-  width: 80%;
-  align-self: center;
-  position: absolute;
-  border-radius: 5px;
   background-color: lightblue;
 }
 
@@ -97,7 +80,7 @@
   border-right: 10vmin solid transparent;
   border-bottom: 14vmin solid white;
   position: absolute;
-  animation: movingMountain 5s linear infinite;
+  animation: movingMountain 10s linear infinite;
 }
 
 .leftMountain {
@@ -111,13 +94,4 @@
   to {
     transform: translateX(-100%);
   }
-}
-
-.mileageButtonText {
-  text-decoration: none;
-  color: black;
-  z-index: 1;
-  font-size: 2em;
-  align-self: flex-start;
-  margin-left: 10%;
 }

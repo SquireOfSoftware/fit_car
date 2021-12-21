@@ -2,6 +2,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "./../../db/DB";
 import MileageReadOut from "./MileageReadOut";
 import styles from "./ReadMileage.module.css";
+import sharedStyles from "../SharedCard.module.css";
 
 export default function ReadMileage() {
   const storedData = useLiveQuery(() => {
@@ -20,6 +21,22 @@ export default function ReadMileage() {
           timeUtc={entry.timeUtc}
         />
       ))}
+    </div>
+  );
+}
+
+export function ReadMileageButton() {
+  return (
+    <div className={[sharedStyles.cardButton].join(" ")}>
+      <div
+        className={[sharedStyles.animatedCard, styles.animatedMileage].join(
+          " "
+        )}
+      >
+        <div className={[sharedStyles.animatedCardText].join(" ")}>
+          Mileage History
+        </div>
+      </div>
     </div>
   );
 }

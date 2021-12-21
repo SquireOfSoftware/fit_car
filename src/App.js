@@ -1,6 +1,8 @@
 import styles from "./App.module.css";
 import { Outlet, Link } from "react-router-dom";
 import { AddMileageButton } from "./components/mileage/AddMileageForm";
+import { ReportButton } from "./components/events/Report";
+import { ReadMileageButton } from "./components/mileage/ReadMileage";
 
 function App() {
   return (
@@ -9,10 +11,15 @@ function App() {
         <p>Fit Car</p>
       </div>
       <nav className={styles.appNav}>
-        <Link to="/addMileage">
+        <Link to="/mileage/add">
           <AddMileageButton />
         </Link>
-        <Link to="/readMileage">Read Mileage</Link>
+        <Link to="/mileage">
+          <ReadMileageButton />
+        </Link>
+        <Link to="/report">
+          <ReportButton />
+        </Link>
       </nav>
       <Outlet />
     </div>

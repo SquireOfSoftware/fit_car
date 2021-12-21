@@ -1,6 +1,7 @@
 import { db } from "./../../db/DB";
 import NumberIncrementer from "./NumberIncrementer";
 import styles from "./AddMileageForm.module.css";
+import sharedStyles from "../SharedCard.module.css";
 import { useState, useEffect } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -121,13 +122,17 @@ export function AddNewMileage({ carId }) {
 
 export function AddMileageButton() {
   return (
-    <div className={styles.addMileageButton}>
-      <div className={styles.animatedCar}>
+    <div className={[sharedStyles.cardButton].join(" ")}>
+      <div
+        className={[sharedStyles.animatedCard, styles.animatedCar].join(" ")}
+      >
         <div className={styles.mountain}></div>
         <div className={[styles.mountain, styles.leftMountain].join(" ")}></div>
         <div className={styles.grass}></div>
         <FontAwesomeIcon className={styles.carIcon} icon={faCarSide} />
-        <div className={styles.mileageButtonText}>Add Mileage</div>
+        <div className={[sharedStyles.animatedCardText].join(" ")}>
+          Add Mileage
+        </div>
       </div>
     </div>
   );
