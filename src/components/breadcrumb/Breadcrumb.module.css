@@ -1,0 +1,5 @@
+.breadcrumbContainer {
+  background-color: skyblue;
+  gap: 2em;
+  display: flex;
+}

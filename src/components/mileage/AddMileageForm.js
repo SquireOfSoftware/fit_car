@@ -7,6 +7,9 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUndo, faPlus, faCarSide } from "@fortawesome/free-solid-svg-icons";
 
+import ReadMileage from "./ReadMileage";
+import Breadcrumb from "../breadcrumb/Breadcrumb";
+
 export function AddNewMileage({ carId }) {
   const [mileageValue, setMileage] = useState(0);
   const [previousMileage, setPreviousMileage] = useState(0);
@@ -69,52 +72,57 @@ export function AddNewMileage({ carId }) {
 
   return (
     <>
-      <div className={styles.mileageIncrementer}>
-        {stringifiedValue.split("").map((character, index) => {
-          return (
-            <NumberIncrementer
-              key={index}
-              currentDigit={character}
-              isHidden={index < stringifiedValue.length - 3}
-              incrementDigit={() => {
-                incrementNumber(
-                  mileageValue,
-                  stringifiedValue.length - index - 1
-                );
-              }}
-              decrementDigit={() => {
-                decrementNumber(
-                  mileageValue,
-                  stringifiedValue.length - index - 1
-                );
-              }}
-            />
-          );
-        })}
-      </div>
+      <Breadcrumb uriSegments={["home", "mileage", "add"]} />
+      <div className={styles.addMileageForm}>
+        <h2>Add in today's mileage</h2>
+        <div className={styles.mileageIncrementer}>
+          {stringifiedValue.split("").map((character, index) => {
+            return (
+              <NumberIncrementer
+                key={index}
+                currentDigit={character}
+                isHidden={index < stringifiedValue.length - 3}
+                incrementDigit={() => {
+                  incrementNumber(
+                    mileageValue,
+                    stringifiedValue.length - index - 1
+                  );
+                }}
+                decrementDigit={() => {
+                  decrementNumber(
+                    mileageValue,
+                    stringifiedValue.length - index - 1
+                  );
+                }}
+              />
+            );
+          })}
+        </div>
 
-      <button
-        className={styles.saveButton}
-        onClick={() => {
-          addMileage(mileageValue);
-        }}
-      >
-        <FontAwesomeIcon icon={faPlus} /> Add
-      </button>
-      <div
-        className={[
-          styles.mileageSummary,
-          mileageValue !== 0 && mileageValue !== previousMileage
-            ? ""
-            : styles.invisible,
-        ].join(" ")}
-      >
-        <div>{`You drove ${mileageValue - previousMileage} km${
-          mileageValue - previousMileage !== 1 ? "s" : ""
-        } today`}</div>
-        <button className={styles.undoButton} onClick={undoMileage}>
-          <FontAwesomeIcon icon={faUndo} /> Undo
+        <button
+          className={styles.saveButton}
+          onClick={() => {
+            addMileage(mileageValue);
+          }}
+        >
+          <FontAwesomeIcon icon={faPlus} /> Add
         </button>
+        <div
+          className={[
+            styles.mileageSummary,
+            mileageValue !== 0 && mileageValue !== previousMileage
+              ? ""
+              : styles.invisible,
+          ].join(" ")}
+        >
+          <div>{`You drove ${mileageValue - previousMileage} km${
+            mileageValue - previousMileage !== 1 ? "s" : ""
+          } today`}</div>
+          <button className={styles.undoButton} onClick={undoMileage}>
+            <FontAwesomeIcon icon={faUndo} /> Undo
+          </button>
+        </div>
+        <ReadMileage limit={2} embedded={true} />
       </div>
     </>
   );
