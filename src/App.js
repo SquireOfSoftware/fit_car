@@ -1,8 +1,5 @@
-import { useEffect } from "react";
 import "./App.css";
-import AddMileageForm, {
-  AddNewMileage,
-} from "./components/mileage/AddMileageForm";
+import { AddNewMileage } from "./components/mileage/AddMileageForm";
 import ReadMileage from "./components/mileage/ReadMileage";
 
 function App() {

@@ -12,6 +12,7 @@
   height: 3em;
   align-self: center;
   transition: 0.3s;
+  cursor: pointer;
 }
 
 .saveButton:hover,

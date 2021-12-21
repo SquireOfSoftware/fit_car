@@ -21,7 +21,6 @@ export function AddNewMileage({ carId }) {
       });
   }, []);
 
-  console.log(mileageValue);
   // split the known value into digits, so convert value to string
   // then split the values up by digit
   let stringifiedValue = mileageValue.toString().padStart(6, "0");
@@ -32,7 +31,7 @@ export function AddNewMileage({ carId }) {
 
   const incrementNumber = (baseValue, index) => {
     const newValue = baseValue + Math.pow(10, index);
-    console.log({ newValue });
+    console.debug({ newValue });
     setMileage(newValue);
   };
 
@@ -41,7 +40,7 @@ export function AddNewMileage({ carId }) {
     if (newValue < 0) {
       newValue = 0;
     }
-    console.log({ newValue });
+    console.debug({ newValue });
     setMileage(newValue);
   };
 

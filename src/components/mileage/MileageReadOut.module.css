@@ -1,0 +1,7 @@
+.mileage {
+  font-size: 3em;
+}
+
+.mileageSummary {
+  display: flex;
+}

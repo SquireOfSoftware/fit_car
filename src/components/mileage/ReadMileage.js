@@ -1,6 +1,7 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "./../../db/DB";
 import MileageReadOut from "./MileageReadOut";
+import styles from "./ReadMileage.module.css";
 
 export default function ReadMileage() {
   const storedData = useLiveQuery(() => {
@@ -8,20 +9,16 @@ export default function ReadMileage() {
     return db.mileage.orderBy("timeUtc").reverse().limit(5).toArray();
   });
 
-  console.log(storedData);
-
   if (!storedData) return null;
 
   return (
-    <div>
+    <div className={styles.mileageSummary}>
       {storedData?.map((entry) => (
-        <div key={entry.id}>
-          <MileageReadOut
-            id={entry.id}
-            mileage={entry.currentMileage}
-            timeUtc={entry.timeUtc}
-          />
-        </div>
+        <MileageReadOut
+          key={entry.id}
+          mileage={entry.currentMileage}
+          timeUtc={entry.timeUtc}
+        />
       ))}
     </div>
   );
