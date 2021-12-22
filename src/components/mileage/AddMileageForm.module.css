@@ -35,7 +35,8 @@
 }
 
 .animatedCar {
-  background-color: lightblue;
+  background-color: gray;
+  transition: background-color 0.3s;
 }
 
 .carIcon {
@@ -46,6 +47,7 @@
   color: black;
   right: 20%;
   animation: carJitter 0.1s linear infinite;
+  animation-play-state: paused;
 }
 
 @keyframes carJitter {
@@ -58,20 +60,22 @@
 }
 
 .grass {
-  background-color: lightslategray;
+  background-color: black;
   height: 5px;
   width: 100%;
   position: absolute;
   bottom: 0;
+  transition: background-color 0.3s;
 }
 
 .mountain {
-  transform: translateX(500%);
+  transform: translateX(90vw);
   border-left: 10vmin solid transparent;
   border-right: 10vmin solid transparent;
   border-bottom: 14vmin solid white;
   position: absolute;
   animation: movingMountain 10s linear infinite;
+  animation-play-state: paused;
 }
 
 .leftMountain {
@@ -80,9 +84,22 @@
 
 @keyframes movingMountain {
   from {
-    transform: translateX(500%);
+    transform: translateX(90vw);
   }
   to {
-    transform: translateX(-100%);
+    transform: translateX(-20vw);
   }
+}
+
+.animatedCar:hover .mountain,
+.animatedCar:hover .carIcon {
+  animation-play-state: running;
+}
+
+.animatedCar:hover {
+  background-color: lightblue;
+}
+
+.animatedCar:hover .grass {
+  background-color: lightslategray;
 }
