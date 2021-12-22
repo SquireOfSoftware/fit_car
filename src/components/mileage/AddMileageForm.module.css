@@ -12,22 +12,6 @@
   gap: 1em;
 }
 
-.saveButton,
-.undoButton {
-  margin-top: 10px;
-  border: none;
-  height: 3em;
-  align-self: center;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.saveButton:hover,
-.undoButton:hover {
-  background-color: gray;
-  color: white;
-}
-
 .undoButton {
   background-color: orange;
   width: initial;

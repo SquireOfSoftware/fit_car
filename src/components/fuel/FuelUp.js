@@ -8,7 +8,6 @@ export default function FuelUp({ carId }) {
     <div className={styles.fuelUpPage}>
       <Breadcrumb uriSegments={["home", "fuel", "add"]} />
       <FuelTank carId={carId} />
-      Fuel up now!
     </div>
   );
 }

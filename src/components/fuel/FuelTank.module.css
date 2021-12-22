@@ -43,11 +43,14 @@
 }
 
 .button {
-  border: 0;
   width: 100%;
   padding-top: 1em;
   padding-bottom: 1em;
-  cursor: pointer;
+}
+
+.fuelUpButton {
+  background-color: rgb(37, 147, 238);
+  color: white;
 }
 
 .costSummary {

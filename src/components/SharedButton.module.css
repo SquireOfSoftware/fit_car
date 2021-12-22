@@ -1,0 +1,13 @@
+.button {
+  margin-top: 10px;
+  border: none;
+  height: 3em;
+  align-self: center;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: gray;
+  color: white;
+}

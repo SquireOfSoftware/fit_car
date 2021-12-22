@@ -14,7 +14,7 @@ export default function Breadcrumb({ uriSegments }) {
           );
         } else if (index === uriSegments.length - 1) {
           // then it is the last item
-          return <div key={index}>last item</div>;
+          return <div key={index}>{uri}</div>;
         }
         return (
           <Link key={index} to={"/" + uri}>

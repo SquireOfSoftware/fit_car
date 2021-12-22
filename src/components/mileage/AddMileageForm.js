@@ -2,6 +2,7 @@ import { db } from "./../../db/DB";
 import NumberIncrementer from "./NumberIncrementer";
 import styles from "./AddMileageForm.module.css";
 import sharedStyles from "../SharedCard.module.css";
+import sharedButtons from "../SharedButton.module.css";
 import { useState, useEffect } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -102,7 +103,7 @@ export function AddNewMileage({ carId }) {
         </div>
 
         <button
-          className={styles.saveButton}
+          className={[sharedButtons.button, styles.saveButton].join(" ")}
           onClick={() => {
             addMileage(mileageValue);
           }}
@@ -120,7 +121,7 @@ export function AddNewMileage({ carId }) {
           <div>{`You drove ${mileageValue - previousMileage} km${
             mileageValue - previousMileage !== 1 ? "s" : ""
           } today`}</div>
-          <button className={styles.undoButton} onClick={undoMileage}>
+          <button className={[sharedButtons.button, styles.undoButton].join(" ")} onClick={undoMileage}>
             <FontAwesomeIcon icon={faUndo} /> Undo
           </button>
         </div>
