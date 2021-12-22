@@ -9,6 +9,7 @@ import { faUndo, faPlus, faCarSide } from "@fortawesome/free-solid-svg-icons";
 
 import ReadMileage from "./ReadMileage";
 import Breadcrumb from "../breadcrumb/Breadcrumb";
+import EventTypes from "../events/EventTypes";
 
 export function AddNewMileage({ carId }) {
   const [mileageValue, setMileage] = useState(0);
@@ -49,7 +50,7 @@ export function AddNewMileage({ carId }) {
   };
 
   const addMileage = (currentMileage) => {
-    let timeUtc = Date.now();
+    const timeUtc = Date.now();
 
     db.mileage
       .add({
@@ -60,6 +61,7 @@ export function AddNewMileage({ carId }) {
       .then((id) => {
         console.log(`db entry saved at ${id}`);
         setPreviousMileage(currentMileage);
+        db.events.add({ carId, type: EventTypes.mileage, timeUtc });
       })
       .catch((error) =>
         console.log(`Failed to write to the browser db: ${error}`)

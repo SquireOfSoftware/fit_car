@@ -8,17 +8,21 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AddNewMileage } from "./components/mileage/AddMileageForm";
 import ReadMileage from "./components/mileage/ReadMileage";
 import Report from "./components/events/Report";
+import FuelUp from "./components/fuel/FuelUp";
 
 const rootElement = document.getElementById("root");
+const carId = 2;
 
 ReactDOM.render(
   // routes,
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />}></Route>
-      <Route path="mileage/add" element={<AddNewMileage carId={1} />} />
-      <Route path="mileage" element={<ReadMileage carId={1} />} />
-      <Route path="report" element={<Report carId={1} />} />
+      <Route path="mileage/add" element={<AddNewMileage carId={carId} />} />
+      <Route path="mileage" element={<ReadMileage carId={carId} />} />
+      <Route path="fuel/add" element={<FuelUp carId={carId} />} />
+
+      <Route path="report" element={<Report carId={carId} />} />
     </Routes>
   </BrowserRouter>,
   rootElement
