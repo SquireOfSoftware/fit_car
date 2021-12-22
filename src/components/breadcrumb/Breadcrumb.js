@@ -4,23 +4,36 @@ import { Link } from "react-router-dom";
 export default function Breadcrumb({ uriSegments }) {
   return (
     <div className={styles.breadcrumbContainer}>
+      Nav:
       {uriSegments.map((uri, index) => {
-        if (uri === "home" || uri === "/") {
+        const capitalisedUri = uri[0].toUpperCase() + uri.slice(1);
+        let crumbs = [];
+        if (uriSegments.length === 1 && index === 0) {
+          crumbs.push(<div key={index}>{capitalisedUri}</div>);
+        } else if (uri === "home" || uri === "/") {
           // then it is the first item route to the app homepage
-          return (
+          crumbs.push(
             <Link key={index} to={"/"}>
-              {uri}
+              {capitalisedUri}
             </Link>
           );
         } else if (index === uriSegments.length - 1) {
           // then it is the last item
-          return <div key={index}>{uri}</div>;
+          crumbs.push(<div key={index}>{capitalisedUri}</div>);
+        } else {
+          crumbs.push(
+            <Link key={index} to={"/" + uri}>
+              {capitalisedUri}
+            </Link>
+          );
         }
-        return (
-          <Link key={index} to={"/" + uri}>
-            {uri}
-          </Link>
-        );
+
+        if (index !== uriSegments.length - 1) {
+          // then it is the last item
+          crumbs.push(<div key={index + ">"}>{">"}</div>);
+        }
+
+        return crumbs;
       })}
     </div>
   );

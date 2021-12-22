@@ -20,12 +20,13 @@ export function AddNewMileage({ carId }) {
     db.mileage
       .orderBy("timeUtc")
       .reverse()
-      .first()
-      .then((value) => {
+      .filter((value) => value["carId"] === carId)
+      .limit(1)
+      .each((value) => {
         setMileage(value["currentMileage"]);
         setPreviousMileage(value["currentMileage"]);
       });
-  }, []);
+  }, [carId]);
 
   // split the known value into digits, so convert value to string
   // then split the values up by digit
@@ -121,7 +122,10 @@ export function AddNewMileage({ carId }) {
           <div>{`You drove ${mileageValue - previousMileage} km${
             mileageValue - previousMileage !== 1 ? "s" : ""
           } today`}</div>
-          <button className={[sharedButtons.button, styles.undoButton].join(" ")} onClick={undoMileage}>
+          <button
+            className={[sharedButtons.button, styles.undoButton].join(" ")}
+            onClick={undoMileage}
+          >
             <FontAwesomeIcon icon={faUndo} /> Undo
           </button>
         </div>
