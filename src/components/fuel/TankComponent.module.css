@@ -1,0 +1,37 @@
+.fuelTankContainer {
+  width: 15vmin;
+  height: 55.5vmin;
+  border: solid black;
+  border-radius: 5px;
+  margin-left: 3em;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  margin-right: 1em;
+  position: absolute;
+  overflow: hidden;
+}
+
+.minorMark {
+  height: 5vmin;
+  width: 2vmin;
+  border-bottom: solid black;
+}
+
+.minorMark:nth-child(11) {
+  border: none;
+}
+
+.majorMark {
+  height: 5vmin;
+  width: 4vmin;
+  border-bottom: solid black;
+}
+
+.gasLevel {
+  position: absolute;
+  width: 18vmin;
+  height: 56vmin;
+  top: 20px;
+  background-color: gray;
+  z-index: -1;
+}

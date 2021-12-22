@@ -2,3 +2,33 @@
   display: flex;
   flex-direction: column;
 }
+
+.animatedFuel {
+  background-color: gray;
+  height: 16vmin;
+  position: absolute;
+  top: 14vmin;
+  width: 100%;
+  animation: fillingUp 5s alternate-reverse infinite ease-out;
+  animation-play-state: paused;
+}
+
+.card:hover .animatedFuel {
+  background-color: khaki;
+  animation-play-state: running;
+}
+
+@keyframes fillingUp {
+  0% {
+    top: 0vmin;
+  }
+  10% {
+    top: 0vmin;
+  }
+  80% {
+    top: 14vmin;
+  }
+  100% {
+    top: 14vmin;
+  }
+}

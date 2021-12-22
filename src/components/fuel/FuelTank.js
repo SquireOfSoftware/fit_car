@@ -3,7 +3,8 @@ import sharedButtons from "../SharedButton.module.css";
 import { useState, useEffect } from "react";
 import { db } from "./../../db/DB";
 import EventTypes from "../events/EventTypes";
-import NumberIncrementer from "../mileage/NumberIncrementer";
+import TankComponent from "./TankComponent";
+import CostCounter from "./CostCounter";
 
 export default function FuelTank({ carId }) {
   // fuelTank is just the pixel display of it all
@@ -81,12 +82,6 @@ export default function FuelTank({ carId }) {
 
   console.debug({ fuelGaugeStyle });
 
-  let stringifiedValue = price.toFixed(2).toString();
-  if (stringifiedValue.length < 8) {
-    // we add the zero to the front to enable overflows
-    stringifiedValue = "0" + stringifiedValue;
-  }
-
   const incrementPrice = (baseValue, index) => {
     const newValue = baseValue + Math.pow(10, index);
     console.debug({ newValue });
@@ -135,36 +130,10 @@ export default function FuelTank({ carId }) {
     <div>
       <h2>Resulting tank:</h2>
       <div className={styles.fuelTankHolder}>
-        <div
-          id="fuelContainer"
-          className={styles.fuelTankContainer}
-          onClick={handleClick}
-        >
-          <div className={styles.gasLevel} style={fuelGaugeStyle}></div>
-
-          <div
-            className={[styles.ninetyMark, styles.minorMark].join(" ")}
-          ></div>
-          <div
-            className={[styles.eightyMark, styles.minorMark].join(" ")}
-          ></div>
-          <div
-            className={[styles.seventyMark, styles.minorMark].join(" ")}
-          ></div>
-          <div className={[styles.sixtyMark, styles.minorMark].join(" ")}></div>
-          <div className={[styles.fiftyMark, styles.majorMark].join(" ")}></div>
-          <div
-            className={[styles.fourtyMark, styles.minorMark].join(" ")}
-          ></div>
-          <div
-            className={[styles.thirtyMark, styles.minorMark].join(" ")}
-          ></div>
-          <div
-            className={[styles.twentyMark, styles.minorMark].join(" ")}
-          ></div>
-          <div className={[styles.tenMark, styles.minorMark].join(" ")}></div>
-          <div className={[styles.zeroMark, styles.minorMark].join(" ")}></div>
-        </div>
+        <TankComponent
+          handleClick={handleClick}
+          fuelGaugeStyle={fuelGaugeStyle}
+        />
         <div>You are now at {percentage.toFixed(2)}% full</div>
       </div>
 
@@ -176,52 +145,13 @@ export default function FuelTank({ carId }) {
       </button>
 
       <h2>Total cost of fill up:</h2>
-      <div className={styles.costSummary}>
-        $
-        {stringifiedValue.split("").map((character, index) => {
-          if (character === ".") {
-            // to ignore decimal places
-            return <div key={index}>.</div>;
-          } else if (index > stringifiedValue.indexOf(".")) {
-            // check if the indexes are the last two digits
-            const centIndex = 2 - index + stringifiedValue.indexOf(".");
-            console.debug({
-              index,
-              fullStop: stringifiedValue.indexOf("."),
-              calculated: centIndex,
-            });
-            return (
-              <NumberIncrementer
-                key={index}
-                currentDigit={character}
-                isHidden={index < stringifiedValue.length - 5}
-                incrementDigit={() => {
-                  console.log("incrementing cents");
-                  increaseCents(price, centIndex);
-                }}
-                decrementDigit={() => {
-                  decreaseCents(price, centIndex);
-                }}
-              />
-            );
-          } else {
-            const newIndex = stringifiedValue.length - index - 1 - 3;
-            return (
-              <NumberIncrementer
-                key={index}
-                currentDigit={character}
-                isHidden={index < stringifiedValue.length - 5}
-                incrementDigit={() => {
-                  incrementPrice(price, newIndex);
-                }}
-                decrementDigit={() => {
-                  decrementPrice(price, newIndex);
-                }}
-              />
-            );
-          }
-        })}
-      </div>
+      <CostCounter
+        startingValue={price}
+        increaseCents={increaseCents}
+        decrementCents={decreaseCents}
+        incrementPrice={incrementPrice}
+        decrementPrice={decrementPrice}
+      />
 
       <button
         className={[
