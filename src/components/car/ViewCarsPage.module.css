@@ -1,0 +1,93 @@
+.viewCarsCard {
+  background-color: gray;
+}
+
+.viewCarsCard:hover {
+  transition: 0.2s;
+  background-color: firebrick;
+}
+
+.viewCarsText {
+  color: white;
+}
+
+.car {
+  text-decoration: none;
+  color: white;
+  font-size: 10vmin;
+  right: 11vmin;
+  bottom: 2vmin;
+  position: absolute;
+  animation: carJitter 0.1s linear infinite;
+  animation-play-state: paused;
+}
+
+@keyframes carJitter {
+  from {
+    transform: translateY(2%);
+  }
+  to {
+    transform: translateY(-2%);
+  }
+}
+
+.cog {
+  text-decoration: none;
+  color: white;
+  font-size: 6vmin;
+  right: 4vmin;
+  bottom: 1vmin;
+  position: absolute;
+  animation: rotateCog 1s linear infinite;
+  animation-play-state: paused;
+}
+
+@keyframes rotateCog {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.topCog {
+  text-decoration: none;
+  color: white;
+  font-size: 6vmin;
+  right: 1vmin;
+  bottom: 7vmin;
+  position: absolute;
+  animation: rotateTopCog 1s linear infinite;
+  animation-play-state: paused;
+}
+
+@keyframes rotateTopCog {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.viewCarsCard:hover .car,
+.viewCarsCard:hover .cog,
+.viewCarsCard:hover .topCog {
+  animation-play-state: running;
+}
+
+.createCarButton {
+  width: 100%;
+  background-color: rgb(37, 147, 238);
+  color: white;
+  text-decoration: none;
+  text-align: center;
+}
+
+.carList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

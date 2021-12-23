@@ -4,6 +4,7 @@ import { AddMileageButton } from "./components/mileage/AddMileageForm";
 import { ReportButton } from "./components/events/Report";
 import { FuelUpButton } from "./components/fuel/FuelUp";
 import Breadcrumb from "./components/breadcrumb/Breadcrumb";
+import { ViewCarsButton } from "./components/car/ViewCarsPage";
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
         </Link>
         <Link to="/report">
           <ReportButton />
+        </Link>
+        <Link to="/cars">
+          <ViewCarsButton />
         </Link>
       </nav>
       <Outlet />

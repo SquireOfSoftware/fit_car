@@ -9,6 +9,9 @@ import { AddNewMileage } from "./components/mileage/AddMileageForm";
 import ReadMileage from "./components/mileage/ReadMileage";
 import Report from "./components/events/Report";
 import FuelUp from "./components/fuel/FuelUp";
+import EditCarPage from "./components/car/EditCarPage";
+import ViewCarsPage from "./components/car/ViewCarsPage";
+import AddCarPage from "./components/car/AddCarPage";
 
 const rootElement = document.getElementById("root");
 const carId = 2;
@@ -21,7 +24,9 @@ ReactDOM.render(
       <Route path="mileage/add" element={<AddNewMileage carId={carId} />} />
       <Route path="mileage" element={<ReadMileage carId={carId} />} />
       <Route path="fuel/add" element={<FuelUp carId={carId} />} />
-
+      <Route path="cars" element={<ViewCarsPage />} />
+      <Route path="cars/add" element={<AddCarPage/>} />
+      <Route path="cars/:carId/edit" element={<EditCarPage />} />
       <Route path="report" element={<Report carId={carId} />} />
     </Routes>
   </BrowserRouter>,

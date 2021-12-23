@@ -38,3 +38,12 @@ export default function Breadcrumb({ uriSegments }) {
     </div>
   );
 }
+
+export const BreadcrumbIndicies = {
+  home: "home",
+  mileage: "mileage",
+  reports: "reports",
+  cars: "cars",
+  add: "add",
+  edit: "edit",
+};
