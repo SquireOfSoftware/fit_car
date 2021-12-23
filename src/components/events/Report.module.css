@@ -1,3 +1,67 @@
 .animatedReport {
+  background-color: lightgray;
+}
+
+.animatedColumn {
+  background-color: gray;
+  height: 16vmin;
+  width: 8vmin;
+  position: absolute;
+}
+
+.animatedColumnOne {
+  transform: translate(40vmin, 1vmin);
+  animation: movingColumnOne 2s alternate-reverse infinite ease-in-out;
+
+  animation-play-state: paused;
+}
+
+@keyframes movingColumnOne {
+  from {
+    transform: translate(40vmin, 1vmin);
+  }
+  to {
+    transform: translate(40vmin, 14vmin);
+  }
+}
+
+.animatedColumnTwo {
+  transform: translate(50vmin, 14vmin);
+  animation: movingColumnTwo 2s 0.5s alternate-reverse infinite ease-in-out;
+
+  animation-play-state: paused;
+}
+
+@keyframes movingColumnTwo {
+  from {
+    transform: translate(50vmin, 1vmin);
+  }
+  to {
+    transform: translate(50vmin, 14vmin);
+  }
+}
+
+.animatedColumnThree {
+  transform: translate(60vmin, 14vmin);
+  animation: movingColumnThree 2s 1s alternate-reverse infinite ease-in-out;
+
+  animation-play-state: paused;
+}
+
+@keyframes movingColumnThree {
+  from {
+    transform: translate(60vmin, 1vmin);
+  }
+  to {
+    transform: translate(60vmin, 14vmin);
+  }
+}
+
+.animatedReport:hover .animatedColumn {
+  animation-play-state: running;
+  background-color: blueviolet;
+}
+
+.animatedReport:hover {
   background-color: wheat;
 }

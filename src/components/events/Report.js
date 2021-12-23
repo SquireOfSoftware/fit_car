@@ -20,7 +20,22 @@ export function ReportButton() {
       <div
         className={[sharedStyles.animatedCard, styles.animatedReport].join(" ")}
       >
-        <div className={[sharedStyles.animatedCardText].join(" ")}>Report</div>
+        <div
+          className={[styles.animatedColumn, styles.animatedColumnOne].join(
+            " "
+          )}
+        ></div>
+        <div
+          className={[styles.animatedColumn, styles.animatedColumnTwo].join(
+            " "
+          )}
+        ></div>
+        <div
+          className={[styles.animatedColumn, styles.animatedColumnThree].join(
+            " "
+          )}
+        ></div>
+        <div className={[sharedStyles.animatedCardText].join(" ")}>Reports</div>
       </div>
     </div>
   );
