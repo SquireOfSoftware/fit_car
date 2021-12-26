@@ -30,13 +30,6 @@ export default function ViewCarsPage() {
       />
       <div className={styles.carList}>
         <h2>Currently active car</h2>
-
-        {/* <button
-          className={[sharedButton.button, styles.createCarButton].join(" ")}
-          onClick={addCar}
-        >
-          Add a car
-        </button> */}
         <Link
           className={[sharedButton.button, styles.createCarButton].join(" ")}
           to="add"

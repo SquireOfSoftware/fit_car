@@ -1,0 +1,29 @@
+.addCarPage {
+  display: flex;
+  flex-direction: column;
+}
+
+.carForm {
+  display: grid;
+  margin: 1em;
+  max-width: 80%;
+  grid-template-columns: 4em auto;
+  align-self: center;
+  gap: 0.5em;
+  width: 100%;
+}
+
+.carForm .formField {
+  border: none;
+  border-bottom: 1px solid lightgray;
+}
+
+.formField:hover,
+.formField:active {
+  border-bottom: 1px solid black;
+}
+
+.submitButton,
+.legend {
+  grid-column: span 2;
+}

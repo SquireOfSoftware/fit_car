@@ -1,10 +1,10 @@
 export const CarMakes = {
-  toyota: "Toyota",
-  ford: "Ford",
-  mazda: "Mazda",
+  Toyota: "toyota",
+  Ford: "ford",
+  Mazda: "mazda",
 };
 
 export const CarStyles = {
-  corolla: "Corolla",
-  camry: "Camry",
+  Corolla: "corolla",
+  Camry: "camry",
 };
