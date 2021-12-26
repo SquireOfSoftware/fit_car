@@ -28,11 +28,10 @@ export default function ViewCarsPage() {
   // we need to deactivate the previous car and activate the new car
   const activateCar = (newCar) => {
     if (newCar["id"] === activeCar["id"]) {
-      console.log(
+      console.warn(
         `The car of ${newCar["id"]} is already active, ignoring the update`
       );
     } else {
-      console.log("trying to udpate the car");
       db.cars
         .update(newCar["id"], { isActive: "true" })
         .then((updatedEntries) => {
@@ -48,7 +47,7 @@ export default function ViewCarsPage() {
             }
             return car;
           });
-          console.log({ newCars });
+          console.debug({ newCars });
 
           setCars(newCars);
 
