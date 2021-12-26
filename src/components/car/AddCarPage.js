@@ -32,25 +32,34 @@ export default function AddCarPage() {
   const addCar = () => {
     // first we want to check if this car is the first car being
     // created, if it is, set the isActive flag to true
-    db.cars.where({ isActive: "true" }).count((carCount) => {
-      const car = {
-        make,
-        style: carStyle,
-        name,
-        maxTank,
-        // set it to true if this is your first car
-        isActive: (carCount === 0).toString(),
-      };
-      console.log({ car });
-      db.cars
-        .add({ ...car })
-        .then((id) => {
-          console.log(`car created with id of ${id}`);
-        })
-        .catch((error) =>
-          console.log(`Failed to write to the browser db: ${error}`)
-        );
-    });
+    const car = {
+      make,
+      style: carStyle,
+      name,
+      maxTank,
+      // set it to true if this is your first car
+      isActive: (activeCarCount === 0).toString(),
+    };
+    console.log({ car });
+
+    if (activeCarCount === 0) {
+      setActiveCarCount(1);
+    }
+
+    db.cars
+      .add({ ...car })
+      .then((id) => {
+        console.log(`car created with id of ${id}`);
+        if (car["isActive"] === "true") {
+          setActiveCarCount(1);
+        }
+      })
+      .catch((error) => {
+        console.log(`Failed to write to the browser db: ${error}`);
+        if (car["isActive"] === "true") {
+          setActiveCarCount(0);
+        }
+      });
   };
 
   const changeName = (event) => {
