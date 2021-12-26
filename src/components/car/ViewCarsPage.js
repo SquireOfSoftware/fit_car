@@ -13,15 +13,51 @@ import CarCard from "./CarCard";
 
 export default function ViewCarsPage() {
   const [cars, setCars] = useState([]);
+  const [activeCar, setActiveCar] = useState({});
 
   useEffect(() => {
     db.cars.orderBy("id").toArray((value) => {
       setCars(value);
+      value
+        .filter((car) => car["isActive"] === "true")
+        .map((car) => setActiveCar(car));
     });
   }, []);
 
   // reads the lists of cars and shows your currently "active" one
-  const addCar = () => {};
+  // we need to deactivate the previous car and activate the new car
+  const activateCar = (newCar) => {
+    if (newCar["id"] === activeCar["id"]) {
+      console.log(
+        `The car of ${newCar["id"]} is already active, ignoring the update`
+      );
+    } else {
+      console.log("trying to udpate the car");
+      db.cars
+        .update(newCar["id"], { isActive: "true" })
+        .then((updatedEntries) => {
+          setActiveCar(newCar);
+
+          // we then need to find the car in the cars list and updated it
+          const newCars = cars.map((car) => {
+            if (car["id"] === newCar["id"]) {
+              return { ...newCar, isActive: "true" };
+            } else if (activeCar !== {} && car["id"] === activeCar["id"]) {
+              // we deactivate the old car, if it exists
+              return { ...activeCar, isActive: "false" };
+            }
+            return car;
+          });
+          console.log({ newCars });
+
+          setCars(newCars);
+
+          if (activeCar !== {}) {
+            db.cars.update(activeCar["id"], { isActive: "false" });
+          }
+        });
+    }
+  };
 
   return (
     <>
@@ -29,16 +65,15 @@ export default function ViewCarsPage() {
         uriSegments={[BreadcrumbIndicies.home, BreadcrumbIndicies.cars]}
       />
       <div className={styles.carList}>
-        <h2>Currently active car</h2>
         <Link
           className={[sharedButton.button, styles.createCarButton].join(" ")}
           to="add"
         >
-          Add a car
+          Add a new car
         </Link>
-
+        <h2>Available cars</h2>
         {cars.map((car, index) => {
-          return <CarCard key={index} car={car} />;
+          return <CarCard key={index} car={car} activateCar={activateCar} />;
         })}
       </div>
     </>
