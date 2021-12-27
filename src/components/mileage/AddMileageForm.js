@@ -12,21 +12,37 @@ import ReadMileage from "./ReadMileage";
 import Breadcrumb from "../breadcrumb/Breadcrumb";
 import EventTypes from "../events/EventTypes";
 
-export function AddNewMileage({ carId }) {
+export function AddNewMileage() {
   const [mileageValue, setMileage] = useState(0);
   const [previousMileage, setPreviousMileage] = useState(0);
+  const [activeCar, setActiveCar] = useState(undefined);
 
   useEffect(() => {
-    db.mileage
-      .orderBy("timeUtc")
-      .reverse()
-      .filter((value) => value["carId"] === carId)
-      .limit(1)
-      .each((value) => {
-        setMileage(value["currentMileage"]);
-        setPreviousMileage(value["currentMileage"]);
-      });
-  }, [carId]);
+    // find the active car
+    db.cars.where({ isActive: "true" }).toArray((cars) => {
+      if (cars > 1) {
+        console.error(
+          `Well something went wrong here, we found ${cars.length} active cars, we only expected one`
+        );
+      } else if (cars.length === 0) {
+        console.error(
+          "We found no active cars, this means you need to create and configure a car for these stats to align to"
+        );
+      } else {
+        console.log({ cars });
+        setActiveCar(cars[0]);
+        db.mileage
+          .orderBy("timeUtc")
+          .reverse()
+          .filter((value) => value["carId"] === cars[0]["id"])
+          .limit(1)
+          .each((value) => {
+            setMileage(value["currentMileage"]);
+            setPreviousMileage(value["currentMileage"]);
+          });
+      }
+    });
+  }, []);
 
   // split the known value into digits, so convert value to string
   // then split the values up by digit
@@ -56,14 +72,18 @@ export function AddNewMileage({ carId }) {
 
     db.mileage
       .add({
-        carId,
+        carId: activeCar["id"],
         currentMileage,
         timeUtc,
       })
       .then((id) => {
         console.log(`db entry saved at ${id}`);
         setPreviousMileage(currentMileage);
-        db.events.add({ carId, type: EventTypes.mileage, timeUtc });
+        db.events.add({
+          carId: activeCar["id"],
+          type: EventTypes.mileage,
+          timeUtc,
+        });
       })
       .catch((error) =>
         console.log(`Failed to write to the browser db: ${error}`)
@@ -77,60 +97,66 @@ export function AddNewMileage({ carId }) {
   return (
     <>
       <Breadcrumb uriSegments={["home", "mileage", "add"]} />
-      <div className={styles.addMileageForm}>
-        <h2>Add in today's mileage</h2>
-        <div className={styles.mileageIncrementer}>
-          {stringifiedValue.split("").map((character, index) => {
-            return (
-              <NumberIncrementer
-                key={index}
-                currentDigit={character}
-                isHidden={index < stringifiedValue.length - 3}
-                incrementDigit={() => {
-                  incrementNumber(
-                    mileageValue,
-                    stringifiedValue.length - index - 1
-                  );
-                }}
-                decrementDigit={() => {
-                  decrementNumber(
-                    mileageValue,
-                    stringifiedValue.length - index - 1
-                  );
-                }}
-              />
-            );
-          })}
-        </div>
+      {activeCar !== undefined && activeCar !== {} ? (
+        <div className={styles.addMileageForm}>
+          <h2>Add in today's mileage</h2>
+          <div className={styles.mileageIncrementer}>
+            {stringifiedValue.split("").map((character, index) => {
+              return (
+                <NumberIncrementer
+                  key={index}
+                  currentDigit={character}
+                  isHidden={index < stringifiedValue.length - 3}
+                  incrementDigit={() => {
+                    incrementNumber(
+                      mileageValue,
+                      stringifiedValue.length - index - 1
+                    );
+                  }}
+                  decrementDigit={() => {
+                    decrementNumber(
+                      mileageValue,
+                      stringifiedValue.length - index - 1
+                    );
+                  }}
+                />
+              );
+            })}
+          </div>
 
-        <button
-          className={[sharedButtons.button, styles.saveButton].join(" ")}
-          onClick={() => {
-            addMileage(mileageValue);
-          }}
-        >
-          <FontAwesomeIcon icon={faPlus} /> Add
-        </button>
-        <div
-          className={[
-            styles.mileageSummary,
-            mileageValue !== 0 && mileageValue !== previousMileage
-              ? ""
-              : styles.invisible,
-          ].join(" ")}
-        >
-          <div>{`You drove ${mileageValue - previousMileage} km${
-            mileageValue - previousMileage !== 1 ? "s" : ""
-          } today`}</div>
           <button
-            className={[sharedButtons.button, styles.undoButton].join(" ")}
-            onClick={undoMileage}
+            className={[sharedButtons.button, styles.saveButton].join(" ")}
+            onClick={() => {
+              addMileage(mileageValue);
+            }}
           >
-            <FontAwesomeIcon icon={faUndo} /> Undo
+            <FontAwesomeIcon icon={faPlus} /> Add
           </button>
+          <div
+            className={[
+              styles.mileageSummary,
+              mileageValue !== 0 && mileageValue !== previousMileage
+                ? ""
+                : styles.invisible,
+            ].join(" ")}
+          >
+            <div>{`You drove ${mileageValue - previousMileage} km${
+              mileageValue - previousMileage !== 1 ? "s" : ""
+            } today`}</div>
+            <button
+              className={[sharedButtons.button, styles.undoButton].join(" ")}
+              onClick={undoMileage}
+            >
+              <FontAwesomeIcon icon={faUndo} /> Undo
+            </button>
+          </div>
+          <ReadMileage limit={2} embedded={true} />
         </div>
-        <ReadMileage limit={2} embedded={true} />
-      </div>
+      ) : (
+        <div>
+          No active car was found, please configure a car before proceeding
+        </div>
+      )}
     </>
   );
 }

@@ -46,3 +46,24 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
+## Features
+
+These are the use cases that I want to have on this app:
+
+| Feature                          | Description                                                                                                                                      | Done          | Priority |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | -------- |
+| view the mileage                 | when looking at the mileage for your car it show all the mileage that you have done thus far, but it relies on an active car being selected      | done          | high     |
+| add mileage                      | just adding your mileage count for the car, this adds it to a dexie db on the browser                                                            | done          | high     |
+| edit mileage                     | editing your exisitng mileage entries                                                                                                            |               | low      |
+| add fuel level and cost          | for when you are filling up your car and you want to track how much you are spending                                                             | done          | high     |
+| edit fuel level and cost         |                                                                                                                                                  |               | very low |
+| read the aggregated reports      | this brings all the data together in one location for you to see the overall health of your car                                                  | working on it | high     |
+| view your configured car proiles | seeing what cars you have currently configured on the app                                                                                        | done          | high     |
+| add a new car profile            |                                                                                                                                                  | done          | high     |
+| activate a new car profile       |                                                                                                                                                  | done          | high     |
+| delete a car profile             | this is for when you want to delete a car profile, it needs to also delete all the associated data linked with the car (this is not recoverable) |               | very low |
+| import external CSV              | you need to be able to import existing data into the app                                                                                         |               | high     |
+| export external CSV              | dumping the data out from the database                                                                                                           |               | medium   |
+| add animations to everything     |                                                                                                                                                  |               | medium   |
+
+It should be reiterated that this is purely to track car information as you drive, you can think of it like a manual health tracker but for your car, so anything that helps you to track this information should be high priority

@@ -14,20 +14,18 @@ import ViewCarsPage from "./components/car/ViewCarsPage";
 import AddCarPage from "./components/car/AddCarPage";
 
 const rootElement = document.getElementById("root");
-const carId = 2;
 
 ReactDOM.render(
-  // routes,
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />}></Route>
-      <Route path="mileage/add" element={<AddNewMileage carId={carId} />} />
-      <Route path="mileage" element={<ReadMileage carId={carId} />} />
-      <Route path="fuel/add" element={<FuelUp carId={carId} />} />
+      <Route path="mileage/add" element={<AddNewMileage/>} />
+      <Route path="mileage" element={<ReadMileage/>} />
+      <Route path="fuel/add" element={<FuelUp/>} />
       <Route path="cars" element={<ViewCarsPage />} />
       <Route path="cars/add" element={<AddCarPage/>} />
       <Route path="cars/:carId/edit" element={<EditCarPage />} />
-      <Route path="report" element={<Report carId={carId} />} />
+      <Route path="report" element={<Report/>} />
     </Routes>
   </BrowserRouter>,
   rootElement

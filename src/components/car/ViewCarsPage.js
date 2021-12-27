@@ -71,10 +71,18 @@ export default function ViewCarsPage() {
           <FontAwesomeIcon icon={faPlus} />
           <div>Add a new car</div>
         </Link>
-        <h2>Available cars</h2>
-        {cars.map((car, index) => {
-          return <CarCard key={index} car={car} activateCar={activateCar} />;
-        })}
+        {cars.length !== 0 ? (
+          <>
+            <h2>Available cars</h2>
+            {cars.map((car, index) => {
+              return (
+                <CarCard key={index} car={car} activateCar={activateCar} />
+              );
+            })}
+          </>
+        ) : (
+          <div>No cars were found</div>
+        )}
       </div>
     </>
   );
