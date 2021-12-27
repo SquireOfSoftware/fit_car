@@ -16,7 +16,7 @@ import AddCarPage from "./components/car/AddCarPage";
 const rootElement = document.getElementById("root");
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename={process.env.PUBLIC_URL}>
     <Routes>
       <Route path="/" element={<App />}></Route>
       <Route path="mileage/add" element={<AddNewMileage/>} />
