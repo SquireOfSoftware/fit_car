@@ -50,7 +50,7 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 
 These are the use cases that I want to have on this app:
 
-| Feature                          | Description                                                                                                                                                                                                                                                                  | Done          | Priority |
+| Feature                          | Description                                                                                                                                                                                                                                                                  | Status        | Priority |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | -------- |
 | view the mileage                 | when looking at the mileage for your car it show all the mileage that you have done thus far, but it relies on an active car being selected                                                                                                                                  | done          | high     |
 | add mileage                      | just adding your mileage count for the car, this adds it to a dexie db on the browser                                                                                                                                                                                        | done          | high     |
@@ -68,5 +68,18 @@ These are the use cases that I want to have on this app:
 | export external CSV              | dumping the data out from the database                                                                                                                                                                                                                                       |               | medium   |
 | add animations to everything     | the app is currently extremely basic, I would like to have notification toasts when things are saved, I would like page transition animations, I would like loading screens to cover up db loads etc                                                                         |               | medium   |
 | publish this to github pages     | figure out some sort of basic pipeline to publish this out to github pages so that I can migrated my spreadsheet onto a web app                                                                                                                                              |               | medium   |
+| track car waxes                  |                                                                                                                                                                                                                                                                              |               | medium   |
+| track mechanic check ups         |                                                                                                                                                                                                                                                                              |               | medium   |
+| track tire levels                |                                                                                                                                                                                                                                                                              |               | medium   |
 
 It should be reiterated that this is purely to track car information as you drive, you can think of it like a manual health tracker but for your car, so anything that helps you to track this information should be high priority
+
+### Reporting use cases
+
+| Use case                               | Description                                                                                               | Status        | Priority |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------- | -------- |
+| provide a default of 30 days of events | this is just the default                                                                                  | done          | high     |
+| changing the start and end date times  | this is to provide a sliding window through the events                                                    | working on it | high     |
+| how many events                        | this is just a count of how many events exists between the periods                                        |               | medium   |
+| how far did i drive from X to Y        | this is to provide the sliding window mechanism                                                           | working on it | high     |
+| how much fuel did i fill up on         | this is to determine how much fuel i filled up on, as well as how much it cost me and how often i fill up |               | medium   |

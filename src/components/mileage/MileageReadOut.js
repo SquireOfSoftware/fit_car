@@ -7,7 +7,7 @@ export default function MileageReadOut(props) {
       <div>
         Mileage on {date.getDate()}-{date.getMonth()}-{date.getFullYear()} was:
       </div>
-      <div className={styles.mileage}>{props.mileage.toLocaleString()} kms</div>
+      <div className={styles.mileage}>{props.mileage} kms</div>
     </div>
   );
 }

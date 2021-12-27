@@ -13,7 +13,7 @@ import CarCard from "./CarCard";
 
 export default function ViewCarsPage() {
   const [cars, setCars] = useState([]);
-  const [activeCar, setActiveCar] = useState({});
+  const [activeCar, setActiveCar] = useState(undefined);
 
   useEffect(() => {
     db.cars.orderBy("id").toArray((value) => {
@@ -27,7 +27,7 @@ export default function ViewCarsPage() {
   // reads the lists of cars and shows your currently "active" one
   // we need to deactivate the previous car and activate the new car
   const activateCar = (newCar) => {
-    if (newCar["id"] === activeCar["id"]) {
+    if (activeCar !== undefined && newCar["id"] === activeCar["id"]) {
       console.warn(
         `The car of ${newCar["id"]} is already active, ignoring the update`
       );
@@ -51,7 +51,8 @@ export default function ViewCarsPage() {
 
           setCars(newCars);
 
-          if (activeCar !== {}) {
+          if (activeCar !== undefined && activeCar !== {}) {
+            console.debug({ activeCar });
             db.cars.update(activeCar["id"], { isActive: "false" });
           }
         });

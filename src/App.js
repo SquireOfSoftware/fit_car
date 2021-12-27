@@ -23,13 +23,13 @@ function App() {
           "We found no active cars, this means you need to create and configure a car for these stats to align to"
         );
       } else {
-        console.log({ cars });
+        console.debug({ cars });
         setActiveCar(cars[0]);
       }
     });
   }, []);
 
-  console.log({ activeCar });
+  console.debug({ activeCar });
 
   return (
     <div className={styles.app}>

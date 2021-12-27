@@ -22,7 +22,7 @@ export default function ReadMileage({ limit, embedded }) {
         {storedData?.map((entry) => (
           <MileageReadOut
             key={entry.id}
-            mileage={entry.currentMileage}
+            mileage={entry.mileage}
             timeUtc={entry.timeUtc}
           />
         ))}

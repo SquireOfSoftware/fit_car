@@ -12,7 +12,7 @@ import ReadMileage from "./ReadMileage";
 import Breadcrumb from "../breadcrumb/Breadcrumb";
 import EventTypes from "../events/EventTypes";
 
-import { getActiveCar } from "../GetActiveCar";
+import { getActiveCar } from "../DBHelperFunctions";
 
 export function AddNewMileage() {
   const [mileageValue, setMileage] = useState(0);
@@ -29,8 +29,8 @@ export function AddNewMileage() {
         .filter((value) => value["carId"] === car["id"])
         .limit(1)
         .each((value) => {
-          setMileage(value["currentMileage"]);
-          setPreviousMileage(value["currentMileage"]);
+          setMileage(value["mileage"]);
+          setPreviousMileage(value["mileage"]);
         });
     });
   }, []);
@@ -64,7 +64,7 @@ export function AddNewMileage() {
     db.mileage
       .add({
         carId: activeCar["id"],
-        currentMileage,
+        mileage: currentMileage,
         timeUtc,
       })
       .then((id) => {
@@ -73,6 +73,7 @@ export function AddNewMileage() {
         db.events.add({
           carId: activeCar["id"],
           type: EventTypes.mileage,
+          eventId: id,
           timeUtc,
         });
       })

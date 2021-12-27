@@ -5,7 +5,7 @@ import { db } from "./../../db/DB";
 import EventTypes from "../events/EventTypes";
 import TankComponent from "./TankComponent";
 import CostCounter from "./CostCounter";
-import { getActiveCar } from "../GetActiveCar";
+import { getActiveCar } from "../DBHelperFunctions";
 
 export default function FuelTank() {
   const [initialPrice, setInitialPrice] = useState(0);
@@ -106,6 +106,7 @@ export default function FuelTank() {
         db.events.add({
           carId: activeCar["id"],
           type: EventTypes.fuelUp,
+          eventId: id,
           timeUtc,
         });
       });
