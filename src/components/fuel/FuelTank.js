@@ -5,28 +5,39 @@ import { db } from "./../../db/DB";
 import EventTypes from "../events/EventTypes";
 import TankComponent from "./TankComponent";
 import CostCounter from "./CostCounter";
+import { getActiveCar } from "../GetActiveCar";
 
-export default function FuelTank({ carId }) {
-  // fuelTank is just the pixel display of it all
-  const [fuelTank, setFuelTank] = useState(0);
-  const [previousFuelTank, setPreviousFuelTank] = useState(0);
-  const [price, setPrice] = useState(0);
+export default function FuelTank() {
+  const [initialPrice, setInitialPrice] = useState(0);
+  const [currentPrice, setPrice] = useState(0);
   const [previousPrice, setPreviousPrice] = useState(0);
-  const [percentage, setPercentage] = useState(100);
-  const [previousPercentage, setPreviousPercentage] = useState(100);
+
+  const [initialTank, setInitialTank] = useState({
+    pixelValue: 0,
+    percentage: 100,
+  });
+
+  const [previousTank, setPreviousTank] = useState({
+    pixelValue: 0,
+    percentage: 100,
+  });
+  const [currentTank, setCurrentTank] = useState({
+    pixelValue: 0,
+    percentage: 100,
+  });
 
   const [maxTank, setMaxTank] = useState(0);
-
-  const container = document.getElementById("fuelContainer");
+  const [activeCar, setActiveCar] = useState(undefined);
 
   useEffect(() => {
-    db.cars.get({ id: carId }).then((car) => {
+    getActiveCar((car) => {
       console.debug({ car });
+      setActiveCar(car);
       setMaxTank(car["maxTank"]);
       db.fuelFillUps
         .orderBy("timeUtc")
         .reverse()
-        .filter((value) => value["carId"] === carId)
+        .filter((value) => value["carId"] === car["id"])
         .limit(1)
         .each((value) => {
           console.debug({ value });
@@ -35,52 +46,55 @@ export default function FuelTank({ carId }) {
           const fuelLevel =
             container.offsetHeight - container.offsetHeight * fuelConsumption;
 
-          setPercentage(fuelConsumption * 100);
-          setPreviousPercentage(fuelConsumption * 100);
-          setFuelTank(fuelLevel);
-          setPreviousFuelTank(fuelLevel);
+          const tank = {
+            pixelValue: fuelLevel,
+            percentage: fuelConsumption * 100,
+          };
+          setPreviousTank(tank);
+          setCurrentTank(tank);
+          setInitialTank(tank);
+
+          setInitialPrice(value["price"]);
           setPrice(value["price"]);
           setPreviousPrice(value["price"]);
         });
     });
-  }, [carId]);
+  }, []);
 
-  const handleClick = (event) => {
-    const computedYCoord = event.clientY - container.offsetTop;
-    const computedPercentage =
-      (1 - computedYCoord / container.offsetHeight) * 100;
-
-    console.debug({ computedPercentage, computedYCoord });
-
-    setFuelTank(computedYCoord);
-    setPercentage(computedPercentage);
+  const handlePreviousFuelClick = (updatedTank) => {
+    console.debug({ updatedTank });
+    setPreviousTank(updatedTank);
   };
 
   const handleSave = () => {
     const timeUtc = Date.now();
-    const actualFuel = (percentage / 100) * maxTank;
+    const actualFuel = (currentTank.percentage / 100) * maxTank;
 
     db.fuelFillUps
       .add({
-        carId,
-        price,
+        carId: activeCar["id"],
+        price: currentPrice,
         tankFilled: actualFuel,
         timeUtc,
       })
       .then((id) => {
-        console.log(`db entry saved at ${id}`);
-        setPreviousFuelTank(fuelTank);
-        setPreviousPrice(price);
-        setPreviousPercentage(percentage);
-        db.events.add({ carId, type: EventTypes.fuelUp, timeUtc });
+        setInitialPrice(currentPrice);
+        setPreviousPrice(currentPrice);
+
+        const newTank = {
+          pixelValue: currentTank.pixelValue,
+          percentage: currentTank.percentage,
+        };
+        setPreviousTank(newTank);
+        setInitialTank(newTank);
+
+        db.events.add({
+          carId: activeCar["id"],
+          type: EventTypes.fuelUp,
+          timeUtc,
+        });
       });
   };
-
-  const fuelGaugeStyle = {
-    top: fuelTank.toFixed(2) + "px",
-  };
-
-  console.debug({ fuelGaugeStyle });
 
   const incrementPrice = (baseValue, index) => {
     const newValue = baseValue + Math.pow(10, index);
@@ -118,35 +132,62 @@ export default function FuelTank({ carId }) {
   };
 
   const resetPrice = () => {
-    setPrice(previousPrice);
+    setPrice(initialPrice);
   };
 
   const resetFuelTank = () => {
-    setFuelTank(previousFuelTank);
-    setPercentage(previousPercentage);
+    setCurrentTank({
+      pixelValue: initialTank.pixelValue,
+      percentage: initialTank.percentage,
+    });
   };
+
+  const currentTankDelta =
+    ((currentTank.percentage - previousTank.percentage) / 100) * maxTank;
+
+  console.debug({
+    previousTank,
+    currentTank,
+    maxTank,
+    currentTankInLiters: currentTankDelta,
+  });
 
   return (
     <div>
       <h2>Resulting tank:</h2>
       <div className={styles.fuelTankHolder}>
         <TankComponent
+          description="Before"
+          clickCallback={handlePreviousFuelClick}
+          currentTank={previousTank}
+          customClass={"before"}
+        />
+        {/* <TankComponent
+          description="After"
           handleClick={handleClick}
           fuelGaugeStyle={fuelGaugeStyle}
-        />
-        <div>You are now at {percentage.toFixed(2)}% full</div>
+          customClass={"after"}
+        /> */}
+        <div>You are now at {currentTank.percentage.toFixed(2)}% full</div>
       </div>
 
-      <button
-        className={[sharedButtons.button, styles.button].join(" ")}
-        onClick={resetFuelTank}
-      >
-        Reset fuel tank
-      </button>
+      {previousTank.pixelValue !== currentTank.pixelValue ? (
+        <>
+          <div>You are adding {currentTankDelta} L</div>
+          <button
+            className={[sharedButtons.button, styles.button].join(" ")}
+            onClick={resetFuelTank}
+          >
+            Reset fuel tank
+          </button>
+        </>
+      ) : (
+        ""
+      )}
 
       <h2>Total cost of fill up:</h2>
       <CostCounter
-        startingValue={price}
+        startingValue={currentPrice}
         increaseCents={increaseCents}
         decrementCents={decreaseCents}
         incrementPrice={incrementPrice}
@@ -164,12 +205,16 @@ export default function FuelTank({ carId }) {
         Add fuel
       </button>
 
-      <button
-        className={[sharedButtons.button, styles.button].join(" ")}
-        onClick={resetPrice}
-      >
-        Reset price
-      </button>
+      {previousPrice !== currentPrice ? (
+        <button
+          className={[sharedButtons.button, styles.button].join(" ")}
+          onClick={resetPrice}
+        >
+          Reset price
+        </button>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

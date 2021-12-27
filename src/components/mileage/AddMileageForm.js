@@ -12,6 +12,8 @@ import ReadMileage from "./ReadMileage";
 import Breadcrumb from "../breadcrumb/Breadcrumb";
 import EventTypes from "../events/EventTypes";
 
+import { getActiveCar } from "../GetActiveCar";
+
 export function AddNewMileage() {
   const [mileageValue, setMileage] = useState(0);
   const [previousMileage, setPreviousMileage] = useState(0);
@@ -19,28 +21,17 @@ export function AddNewMileage() {
 
   useEffect(() => {
     // find the active car
-    db.cars.where({ isActive: "true" }).toArray((cars) => {
-      if (cars > 1) {
-        console.error(
-          `Well something went wrong here, we found ${cars.length} active cars, we only expected one`
-        );
-      } else if (cars.length === 0) {
-        console.error(
-          "We found no active cars, this means you need to create and configure a car for these stats to align to"
-        );
-      } else {
-        console.log({ cars });
-        setActiveCar(cars[0]);
-        db.mileage
-          .orderBy("timeUtc")
-          .reverse()
-          .filter((value) => value["carId"] === cars[0]["id"])
-          .limit(1)
-          .each((value) => {
-            setMileage(value["currentMileage"]);
-            setPreviousMileage(value["currentMileage"]);
-          });
-      }
+    getActiveCar((car) => {
+      setActiveCar(car);
+      db.mileage
+        .orderBy("timeUtc")
+        .reverse()
+        .filter((value) => value["carId"] === car["id"])
+        .limit(1)
+        .each((value) => {
+          setMileage(value["currentMileage"]);
+          setPreviousMileage(value["currentMileage"]);
+        });
     });
   }, []);
 
