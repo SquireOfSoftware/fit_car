@@ -17,6 +17,7 @@ export default function FuelTank() {
     percentage: 100,
   });
 
+  const previousTankId = "fuelContainer-before";
   const [previousTank, setPreviousTank] = useState({
     pixelValue: 0,
     percentage: 100,
@@ -41,8 +42,8 @@ export default function FuelTank() {
         .limit(1)
         .each((value) => {
           console.debug({ value });
-          const container = document.getElementById("fuelContainer");
-          const fuelConsumption = value["tankFilled"] / car["maxTank"];
+          const container = document.getElementById(previousTankId);
+          const fuelConsumption = value["currentTank"] / car["maxTank"];
           const fuelLevel =
             container.offsetHeight - container.offsetHeight * fuelConsumption;
 
@@ -50,6 +51,9 @@ export default function FuelTank() {
             pixelValue: fuelLevel,
             percentage: fuelConsumption * 100,
           };
+
+          console.debug({ tank });
+
           setPreviousTank(tank);
           setCurrentTank(tank);
           setInitialTank(tank);
@@ -61,6 +65,15 @@ export default function FuelTank() {
     });
   }, []);
 
+  // we always assume that it should be greater than the previous tank
+  const handleNewTankClick = (updatedTank) => {
+    if (updatedTank.percentage < previousTank.percentage) {
+      setCurrentTank(previousTank);
+    } else {
+      setCurrentTank(updatedTank);
+    }
+  };
+
   const handlePreviousFuelClick = (updatedTank) => {
     console.debug({ updatedTank });
     setPreviousTank(updatedTank);
@@ -68,13 +81,15 @@ export default function FuelTank() {
 
   const handleSave = () => {
     const timeUtc = Date.now();
+    const previousFuel = (previousTank.percentage / 100) * maxTank;
     const actualFuel = (currentTank.percentage / 100) * maxTank;
 
     db.fuelFillUps
       .add({
         carId: activeCar["id"],
         price: currentPrice,
-        tankFilled: actualFuel,
+        currentTank: actualFuel,
+        previousTank: previousFuel,
         timeUtc,
       })
       .then((id) => {
@@ -136,10 +151,8 @@ export default function FuelTank() {
   };
 
   const resetFuelTank = () => {
-    setCurrentTank({
-      pixelValue: initialTank.pixelValue,
-      percentage: initialTank.percentage,
-    });
+    setCurrentTank(initialTank);
+    setPreviousTank(initialTank);
   };
 
   const currentTankDelta =
@@ -154,31 +167,33 @@ export default function FuelTank() {
 
   return (
     <div>
-      <h2>Resulting tank:</h2>
       <div className={styles.fuelTankHolder}>
         <TankComponent
-          description="Before"
+          description="Before filling up"
           clickCallback={handlePreviousFuelClick}
           currentTank={previousTank}
+          initialTank={initialTank}
           customClass={"before"}
         />
-        {/* <TankComponent
-          description="After"
-          handleClick={handleClick}
-          fuelGaugeStyle={fuelGaugeStyle}
+        <TankComponent
+          description="After filling up"
+          clickCallback={handleNewTankClick}
+          currentTank={currentTank}
+          initialTank={initialTank}
           customClass={"after"}
-        /> */}
-        <div>You are now at {currentTank.percentage.toFixed(2)}% full</div>
+        />
       </div>
 
-      {previousTank.pixelValue !== currentTank.pixelValue ? (
+      {currentTankDelta !== 0 ? (
         <>
-          <div>You are adding {currentTankDelta} L</div>
+          <div className={styles.tankDelta}>
+            You are adding {currentTankDelta.toFixed(2)} L
+          </div>
           <button
             className={[sharedButtons.button, styles.button].join(" ")}
             onClick={resetFuelTank}
           >
-            Reset fuel tank
+            Reset fuel tanks
           </button>
         </>
       ) : (
@@ -194,17 +209,6 @@ export default function FuelTank() {
         decrementPrice={decrementPrice}
       />
 
-      <button
-        className={[
-          sharedButtons.button,
-          styles.button,
-          styles.fuelUpButton,
-        ].join(" ")}
-        onClick={handleSave}
-      >
-        Add fuel
-      </button>
-
       {previousPrice !== currentPrice ? (
         <button
           className={[sharedButtons.button, styles.button].join(" ")}
@@ -215,6 +219,39 @@ export default function FuelTank() {
       ) : (
         ""
       )}
+
+      <h2>Summary</h2>
+      <FillUpSummary
+        currentPrice={currentPrice}
+        currentTank={currentTank}
+        previousTank={previousTank}
+        maxTank={maxTank}
+      />
+
+      <button
+        className={[
+          sharedButtons.button,
+          styles.button,
+          styles.fuelUpButton,
+        ].join(" ")}
+        onClick={handleSave}
+      >
+        Add fuel
+      </button>
+    </div>
+  );
+}
+
+function FillUpSummary({ currentPrice, currentTank, previousTank, maxTank }) {
+  const tankDelta =
+    ((currentTank.percentage - previousTank.percentage) / 100) * maxTank;
+
+  return (
+    <div className={styles.fillUpSummary}>
+      <div>
+        Today cost you: ${currentPrice.toFixed(2)} for {tankDelta.toFixed(2)} L
+      </div>
+      <div>Which is roughly ${(tankDelta / currentPrice).toFixed(2)} per L</div>
     </div>
   );
 }

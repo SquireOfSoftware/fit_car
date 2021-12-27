@@ -1,7 +1,9 @@
 .fuelTankHolder {
-  height: 64vmin;
+  height: 70vmin;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  gap: 2em;
 }
 
 .button {
@@ -20,4 +22,12 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+.tankDelta {
+  text-align: center;
+}
+
+.fillUpSummary {
+  margin-left: 3em;
 }

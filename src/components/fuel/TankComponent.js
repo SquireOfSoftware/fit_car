@@ -10,7 +10,7 @@ export default function TankComponent({
     top: currentTank.pixelValue.toFixed(2) + "px",
   };
 
-  const id = "fuelContainer" + description;
+  const id = "fuelContainer-" + customClass;
 
   const handleClick = (event) => {
     const container = document.getElementById(id);
@@ -33,11 +33,13 @@ export default function TankComponent({
   };
 
   return (
-    <div className={styles.container}>
-      <div>{description}</div>
+    <div className={[styles.container].join(" ")}>
+      <div className={styles.description}>
+        {description}: {currentTank.percentage.toFixed(2)}%
+      </div>
       <div
         id={id}
-        className={[styles.fuelTankContainer, styles[customClass]].join(" ")}
+        className={[styles.fuelTankContainer].join(" ")}
         onClick={handleClick}
       >
         <div className={styles.gasLevel} style={currentStyle}></div>

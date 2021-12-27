@@ -1,5 +1,5 @@
 .fuelTankContainer {
-  width: 15vmin;
+  width: 28vmin;
   height: 55.5vmin;
   border: solid black;
   border-radius: 5px;
@@ -25,7 +25,7 @@
 
 .gasLevel {
   position: absolute;
-  width: 18vmin;
+  width: 28vmin;
   height: 56vmin;
   top: 20px;
   background-color: gray;
@@ -33,11 +33,10 @@
 }
 
 .container {
-  position: absolute;
+  margin-top: 1em;
 }
 
-.before {
-}
-
-.after {
+.description {
+  width: 10em;
+  height: 3em;
 }
