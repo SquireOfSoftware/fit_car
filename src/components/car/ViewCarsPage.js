@@ -8,7 +8,7 @@ import { db } from "./../../db/DB";
 import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCar, faCog } from "@fortawesome/free-solid-svg-icons";
+import { faCar, faCog, faPlus } from "@fortawesome/free-solid-svg-icons";
 import CarCard from "./CarCard";
 
 export default function ViewCarsPage() {
@@ -68,7 +68,8 @@ export default function ViewCarsPage() {
           className={[sharedButton.button, styles.createCarButton].join(" ")}
           to="add"
         >
-          Add a new car
+          <FontAwesomeIcon icon={faPlus} />
+          <div>Add a new car</div>
         </Link>
         <h2>Available cars</h2>
         {cars.map((car, index) => {
