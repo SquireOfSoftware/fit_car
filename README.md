@@ -48,10 +48,11 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 
 ### `yarn deploy`
 
-This command will use the default github dependency to push stuff out to github on this link here: 
+This command will use the default github dependency to push stuff out to github on this link here:
 https://squireofsoftware.github.io/fit_car/
 
 It will setup the `gh-pages` branch on the repo and then push a production build to it.
+
 ## Features
 
 These are the use cases that I want to have on this app:
@@ -73,7 +74,7 @@ These are the use cases that I want to have on this app:
 | import external CSV              | you need to be able to import existing data into the app                                                                                                                                                                                                                     |               | high     |
 | export external CSV              | dumping the data out from the database                                                                                                                                                                                                                                       |               | medium   |
 | add animations to everything     | the app is currently extremely basic, I would like to have notification toasts when things are saved, I would like page transition animations, I would like loading screens to cover up db loads etc                                                                         |               | medium   |
-| publish this to github pages     | figure out some sort of basic pipeline to publish this out to github pages so that I can migrated my spreadsheet onto a web app                                                                                                                                              |               | medium   |
+| publish this to github pages     | figure out some sort of basic pipeline to publish this out to github pages so that I can migrated my spreadsheet onto a web app, update: this has been sorted out, just run `yarn run deploy` and it will deploy to github                                                   | done          | medium   |
 | track car waxes                  |                                                                                                                                                                                                                                                                              |               | medium   |
 | track mechanic check ups         |                                                                                                                                                                                                                                                                              |               | medium   |
 | track tire levels                |                                                                                                                                                                                                                                                                              |               | medium   |
