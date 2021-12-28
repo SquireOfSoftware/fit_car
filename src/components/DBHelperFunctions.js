@@ -28,24 +28,41 @@ export function getEvents(start, end) {
   }
 }
 
-export function getMileageEvents(start, end) {
-  const eventPromise = db.mileage.where("timeUtc");
+export function getMileageEvents(carId, start, end) {
+  console.debug({
+    carId,
+    start,
+    end,
+  });
+  const eventPromise = db.mileage.where(["carId", "timeUtc"]);
   if (end > start) {
-    return eventPromise.between(start, end).toArray();
+    return eventPromise
+      .between([carId, start], [carId, end])
+      .reverse()
+      .sortBy("timeUtc");
   } else if (end === start) {
-    return eventPromise.equals(start).toArray();
+    return eventPromise.equals([carId, start]).reverse().sortBy("timeUtc");
   } else {
-    return eventPromise.between(end, start).toArray();
+    return eventPromise
+      .between([carId, end], [carId, start])
+      .reverse()
+      .sortBy("timeUtc");
   }
 }
 
-export function getFuelUpEvents(start, end) {
-  const eventPromise = db.fuelFillUps.where("timeUtc");
+export function getFuelUpEvents(carId, start, end) {
+  const eventPromise = db.fuelFillUps.where(["carId", "timeUtc"]);
   if (end > start) {
-    return eventPromise.between(start, end).toArray();
+    return eventPromise
+      .between([carId, start], [carId, end])
+      .reverse()
+      .sortBy("timeUtc");
   } else if (end === start) {
-    return eventPromise.equals(start).toArray();
+    return eventPromise.equals([carId, start]).reverse().sortBy("timeUtc");
   } else {
-    return eventPromise.between(end, start).toArray();
+    return eventPromise
+      .between([carId, end], [carId, start])
+      .reverse()
+      .sortBy("timeUtc");
   }
 }

@@ -2,10 +2,11 @@ import Dexie from "dexie";
 
 export const db = new Dexie("fit_car");
 
-db.version(1).stores({
-  mileage: "++id, carId, mileage, timeUtc",
+db.version(3).stores({
+  mileage: "++id, [carId+timeUtc], carId, mileage, timeUtc",
   cars: "++id, name, make, style, maxTank, isActive",
-  fuelFillUps: "++id, carId, price, previousTank, currentTank, timeUtc",
+  fuelFillUps:
+    "++id, [carId+timeUtc], carId, price, fuelType, previousTank, currentTank, timeUtc",
   events: "++id, carId, type, eventId, timeUtc",
 });
 // injecting test data

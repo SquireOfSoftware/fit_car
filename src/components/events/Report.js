@@ -26,10 +26,16 @@ export default function Report() {
       const startTime = new Date();
       const endTime = new Date().setDate(startTime.getDate() - 30);
 
-      getFuelUpEvents(startTime.getTime(), endTime).then((events) => {
-        setFuelUpEvents(events);
-      });
-      getMileageEvents(startTime.getTime(), endTime).then(setMileageEvents);
+      getFuelUpEvents(car["id"], startTime.getTime(), endTime).then(
+        (events) => {
+          setFuelUpEvents(events);
+        }
+      );
+      getMileageEvents(car["id"], startTime.getTime(), endTime).then(
+        (events) => {
+          setMileageEvents(events);
+        }
+      );
     });
   }, []);
 
