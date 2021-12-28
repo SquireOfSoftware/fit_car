@@ -6,6 +6,7 @@ import EventTypes from "../events/EventTypes";
 import TankComponent from "./TankComponent";
 import CostCounter from "./CostCounter";
 import { getActiveCar } from "../DBHelperFunctions";
+import { FuelType } from "../car/CarInfo";
 
 export default function FuelTank() {
   const [initialPrice, setInitialPrice] = useState(0);
@@ -16,6 +17,7 @@ export default function FuelTank() {
     pixelValue: 0,
     percentage: 100,
   });
+  const [fuelType, setFuelType] = useState(FuelType.E10);
 
   const previousTankId = "fuelContainer-before";
   const [previousTank, setPreviousTank] = useState({
@@ -57,6 +59,7 @@ export default function FuelTank() {
           setPreviousTank(tank);
           setCurrentTank(tank);
           setInitialTank(tank);
+          setFuelType(value["fuelType"]);
 
           setInitialPrice(value["price"]);
           setPrice(value["price"]);
@@ -90,6 +93,7 @@ export default function FuelTank() {
         price: currentPrice,
         currentTank: actualFuel,
         previousTank: previousFuel,
+        fuelType,
         timeUtc,
       })
       .then((id) => {
@@ -154,6 +158,10 @@ export default function FuelTank() {
   const resetFuelTank = () => {
     setCurrentTank(initialTank);
     setPreviousTank(initialTank);
+  };
+  const changeFuelType = (event) => {
+    console.debug({ fuelType: event.target.value });
+    setFuelType(event.target.value);
   };
 
   const currentTankDelta =
@@ -221,12 +229,29 @@ export default function FuelTank() {
         ""
       )}
 
+      <label htmlFor="fuelType">Fuel Type*: </label>
+      <select
+        id="fuelType"
+        name="fuelType"
+        className={styles.formField}
+        onChange={changeFuelType}
+      >
+        {Object.keys(FuelType).map((fuelType, index) => {
+          return (
+            <option value={fuelType} key={index}>
+              {fuelType}
+            </option>
+          );
+        })}
+      </select>
+
       <h2>Summary</h2>
       <FillUpSummary
         currentPrice={currentPrice}
         currentTank={currentTank}
         previousTank={previousTank}
         maxTank={maxTank}
+        fuelType={fuelType}
       />
 
       <button
@@ -243,14 +268,21 @@ export default function FuelTank() {
   );
 }
 
-function FillUpSummary({ currentPrice, currentTank, previousTank, maxTank }) {
+function FillUpSummary({
+  currentPrice,
+  currentTank,
+  previousTank,
+  maxTank,
+  fuelType,
+}) {
   const tankDelta =
     ((currentTank.percentage - previousTank.percentage) / 100) * maxTank;
 
   return (
     <div className={styles.fillUpSummary}>
       <div>
-        Today cost you: ${currentPrice.toFixed(2)} for {tankDelta.toFixed(2)} L
+        Today's {fuelType} will cost you: ${currentPrice.toFixed(2)} for{" "}
+        {tankDelta.toFixed(2)} L
       </div>
       <div>Which is roughly ${(tankDelta / currentPrice).toFixed(2)} per L</div>
     </div>

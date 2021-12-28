@@ -34,9 +34,9 @@
 
 .container {
   margin-top: 1em;
+  width: 50vmin;
 }
 
 .description {
-  width: 10em;
   height: 3em;
 }

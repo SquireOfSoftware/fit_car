@@ -4,6 +4,8 @@
   flex-direction: row;
   justify-content: center;
   gap: 2em;
+  padding-left: 2em;
+  padding-right: 2em;
 }
 
 .button {
