@@ -92,8 +92,16 @@ export default function Report() {
                   for your {activeCar.make}!
                 </div>
 
-                <MileageReport events={mileageEvents} />
-                <FuelReport events={fuelUpEvents} />
+                <MileageReport
+                  events={mileageEvents}
+                  startTime={startDatePicker}
+                  endTime={endDatePicker}
+                />
+                <FuelReport
+                  events={fuelUpEvents}
+                  startTime={startDatePicker}
+                  endTime={endDatePicker}
+                />
               </>
             )}
           </div>
