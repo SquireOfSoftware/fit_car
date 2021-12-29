@@ -19,25 +19,44 @@ export default function Report() {
   const [activeCar, setActiveCar] = useState(undefined);
   const [mileageEvents, setMileageEvents] = useState([]);
   const [fuelUpEvents, setFuelUpEvents] = useState([]);
+  const initialTime = new Date();
+
+  const [startDatePicker, setStartDatePicker] = useState(initialTime);
+  const [endDatePicker, setEndDatePicker] = useState(
+    new Date(new Date().setDate(initialTime.getDate() - 30))
+  );
 
   useEffect(() => {
     getActiveCar((car) => {
       setActiveCar(car);
       const startTime = new Date();
-      const endTime = new Date().setDate(startTime.getDate() - 30);
+      const endTime = new Date(new Date().setDate(startTime.getDate() - 30));
 
-      getFuelUpEvents(car["id"], startTime.getTime(), endTime).then(
+      getFuelUpEvents(car["id"], startTime.getTime(), endTime.getTime()).then(
         (events) => {
           setFuelUpEvents(events);
         }
       );
-      getMileageEvents(car["id"], startTime.getTime(), endTime).then(
+      getMileageEvents(car["id"], startTime.getTime(), endTime.getTime()).then(
         (events) => {
           setMileageEvents(events);
         }
       );
     });
   }, []);
+
+  console.log({ startDatePicker, endDatePicker });
+
+  const changeStartTime = (event) => {
+    console.log({ newTime: event.target.value });
+    if (event.target.value > endDatePicker.getTime()) {
+      setStartDatePicker(event.target.value);
+    }
+  };
+
+  const changeEndTime = (event) => {
+    setEndDatePicker(event.target.value);
+  };
 
   return (
     <>
@@ -60,6 +79,13 @@ export default function Report() {
                   for your {activeCar.make}!
                 </div>
 
+                <EventWindow
+                  startTime={startDatePicker}
+                  endTime={endDatePicker}
+                  changeStartTime={changeStartTime}
+                  changeEndTime={changeEndTime}
+                />
+
                 <MileageReport events={mileageEvents} />
                 <FuelReport events={fuelUpEvents} />
               </>
@@ -68,6 +94,45 @@ export default function Report() {
         )}
       </div>
     </>
+  );
+}
+
+function EventWindow({ startTime, changeStartTime, endTime, changeEndTime }) {
+  const toIsoString = (date) => {
+    let pad = function (num) {
+      var norm = Math.floor(Math.abs(num));
+      return (norm < 10 ? "0" : "") + norm;
+    };
+
+    return (
+      date.getFullYear() +
+      "-" +
+      pad(date.getMonth() + 1) +
+      "-" +
+      pad(date.getDate()) +
+      "T" +
+      pad(date.getHours()) +
+      ":" +
+      pad(date.getMinutes()) +
+      ":" +
+      pad(date.getSeconds())
+    );
+  };
+
+  const parsedStart = toIsoString(startTime);
+  const parsedEnd = toIsoString(endTime);
+
+  return (
+    <div className={styles.eventWindowGrid}>
+      <label>From:</label>
+      <input
+        type="datetime-local"
+        value={parsedStart}
+        onChange={changeStartTime}
+      />
+      <label>To:</label>
+      <input type="datetime-local" value={parsedEnd} onChange={changeEndTime} />
+    </div>
   );
 }
 

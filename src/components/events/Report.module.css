@@ -10,7 +10,8 @@
 }
 
 .animatedColumnOne {
-  transform: translate(40vmin, 1vmin);
+  right: 30vmin;
+  transform: translateY(1vmin);
   animation: movingColumnOne 2s alternate-reverse infinite ease-in-out;
 
   animation-play-state: paused;
@@ -18,15 +19,16 @@
 
 @keyframes movingColumnOne {
   from {
-    transform: translate(40vmin, 1vmin);
+    transform: translateY(1vmin);
   }
   to {
-    transform: translate(40vmin, 14vmin);
+    transform: translateY(14vmin);
   }
 }
 
 .animatedColumnTwo {
-  transform: translate(50vmin, 14vmin);
+  right: 20vmin;
+  transform: translateY(14vmin);
   animation: movingColumnTwo 2s 0.5s alternate-reverse infinite ease-in-out;
 
   animation-play-state: paused;
@@ -34,15 +36,16 @@
 
 @keyframes movingColumnTwo {
   from {
-    transform: translate(50vmin, 1vmin);
+    transform: translateY(1vmin);
   }
   to {
-    transform: translate(50vmin, 14vmin);
+    transform: translateY(14vmin);
   }
 }
 
 .animatedColumnThree {
-  transform: translate(60vmin, 14vmin);
+  right: 10vmin;
+  transform: translateY(14vmin);
   animation: movingColumnThree 2s 1s alternate-reverse infinite ease-in-out;
 
   animation-play-state: paused;
@@ -50,10 +53,10 @@
 
 @keyframes movingColumnThree {
   from {
-    transform: translate(60vmin, 1vmin);
+    transform: translateY(1vmin);
   }
   to {
-    transform: translate(60vmin, 14vmin);
+    transform: translateY(14vmin);
   }
 }
 
@@ -70,4 +73,10 @@
   display: flex;
   flex-direction: column;
   margin: 2em;
+}
+
+.eventWindowGrid {
+  display: grid;
+  grid-template-columns: 4em auto;
+  grid-template-rows: auto;
 }
