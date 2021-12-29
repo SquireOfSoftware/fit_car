@@ -229,21 +229,10 @@ export default function FuelTank() {
         ""
       )}
 
-      <label htmlFor="fuelType">Fuel Type*: </label>
-      <select
-        id="fuelType"
-        name="fuelType"
-        className={styles.formField}
-        onChange={changeFuelType}
-      >
-        {Object.keys(FuelType).map((fuelType, index) => {
-          return (
-            <option value={fuelType} key={index}>
-              {fuelType}
-            </option>
-          );
-        })}
-      </select>
+      <FuelTypeDropdDown
+        changeFuelType={changeFuelType}
+        selectedFuelType={fuelType}
+      />
 
       <h2>Summary</h2>
       <FillUpSummary
@@ -264,6 +253,35 @@ export default function FuelTank() {
       >
         Add fuel
       </button>
+    </div>
+  );
+}
+
+function FuelTypeDropdDown({ changeFuelType, selectedFuelType }) {
+  return (
+    <div className={styles.fuelTypeDropdown}>
+      <label htmlFor="fuelType">Fuel Type: </label>
+      <select
+        id="fuelType"
+        name="fuelType"
+        className={styles.fuelTypeOption}
+        onChange={changeFuelType}
+      >
+        {Object.keys(FuelType).map((fuelTypeEnum, index) => {
+          if (fuelTypeEnum === selectedFuelType) {
+            return (
+              <option value={fuelTypeEnum} key={index} selected="selected">
+                {fuelTypeEnum}
+              </option>
+            );
+          }
+          return (
+            <option value={fuelTypeEnum} key={index}>
+              {fuelTypeEnum}
+            </option>
+          );
+        })}
+      </select>
     </div>
   );
 }

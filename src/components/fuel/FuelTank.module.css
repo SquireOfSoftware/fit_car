@@ -33,3 +33,16 @@
 .fillUpSummary {
   margin-left: 3em;
 }
+
+.fuelTypeDropdown {
+  height: 2em;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  margin: 1em;
+}
+
+.fuelTypeOption {
+  flex: 1;
+  height: 2em;
+}
