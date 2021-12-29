@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/fit_car/static/css/main.998c263e.css",
-    "main.js": "/fit_car/static/js/main.c6469cd1.js",
+    "main.css": "/fit_car/static/css/main.e8a51fcf.css",
+    "main.js": "/fit_car/static/js/main.b51a26da.js",
     "static/js/787.1e3fa2b8.chunk.js": "/fit_car/static/js/787.1e3fa2b8.chunk.js",
     "index.html": "/fit_car/index.html",
-    "main.998c263e.css.map": "/fit_car/static/css/main.998c263e.css.map",
-    "main.c6469cd1.js.map": "/fit_car/static/js/main.c6469cd1.js.map",
+    "main.e8a51fcf.css.map": "/fit_car/static/css/main.e8a51fcf.css.map",
+    "main.b51a26da.js.map": "/fit_car/static/js/main.b51a26da.js.map",
     "787.1e3fa2b8.chunk.js.map": "/fit_car/static/js/787.1e3fa2b8.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.998c263e.css",
-    "static/js/main.c6469cd1.js"
+    "static/css/main.e8a51fcf.css",
+    "static/js/main.b51a26da.js"
   ]
 }
