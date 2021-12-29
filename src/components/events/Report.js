@@ -96,6 +96,7 @@ export default function Report() {
                   events={mileageEvents}
                   startTime={startDatePicker}
                   endTime={endDatePicker}
+                  car={activeCar}
                 />
                 <FuelReport
                   events={fuelUpEvents}
