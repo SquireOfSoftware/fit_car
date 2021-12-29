@@ -86,7 +86,7 @@ It should be reiterated that this is purely to track car information as you driv
 | Use case                               | Description                                                                                               | Status        | Priority |
 | -------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------- | -------- |
 | provide a default of 30 days of events | this is just the default                                                                                  | done          | high     |
-| changing the start and end date times  | this is to provide a sliding window through the events                                                    | working on it | high     |
+| changing the start and end date times  | this is to provide a sliding window through the events                                                    | done          | high     |
 | how many events                        | this is just a count of how many events exists between the periods                                        | done          | medium   |
 | how far did i drive from X to Y        | this is to provide the sliding window mechanism                                                           | working on it | high     |
 | how much fuel did i fill up on         | this is to determine how much fuel i filled up on, as well as how much it cost me and how often i fill up |               | medium   |

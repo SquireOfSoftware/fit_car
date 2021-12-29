@@ -31,8 +31,6 @@ export default function Report() {
   useEffect(() => {
     getActiveCar((car) => {
       setActiveCar(car);
-      // const startTime = new Date();
-      // const endTime = new Date(new Date().setDate(startTime.getDate() - 30));
 
       getFuelUpEvents(
         car["id"],
@@ -50,8 +48,6 @@ export default function Report() {
       });
     });
   }, [startDatePicker, endDatePicker]);
-
-  console.log({ startDatePicker, endDatePicker, newDate: dayjs().format() });
 
   const changeStartTime = (event) => {
     // now we need to convert a string back into a dayjs object
