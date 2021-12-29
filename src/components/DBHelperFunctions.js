@@ -29,7 +29,7 @@ export function getEvents(start, end) {
 }
 
 export function getMileageEvents(carId, start, end) {
-  console.debug({
+  console.log({
     carId,
     start,
     end,

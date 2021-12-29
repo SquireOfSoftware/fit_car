@@ -10,6 +10,8 @@ import {
 import FuelReport from "./FuelRreport";
 import MileageReport from "./MileageReport";
 
+import dayjs from "dayjs";
+
 // this should display all the relevant info
 // mileage and general events like: waxing and tire pumps
 export default function Report() {
@@ -19,43 +21,52 @@ export default function Report() {
   const [activeCar, setActiveCar] = useState(undefined);
   const [mileageEvents, setMileageEvents] = useState([]);
   const [fuelUpEvents, setFuelUpEvents] = useState([]);
-  const initialTime = new Date();
+  const initialTime = dayjs();
 
   const [startDatePicker, setStartDatePicker] = useState(initialTime);
   const [endDatePicker, setEndDatePicker] = useState(
-    new Date(new Date().setDate(initialTime.getDate() - 30))
+    initialTime.subtract(30, "day")
   );
 
   useEffect(() => {
     getActiveCar((car) => {
       setActiveCar(car);
-      const startTime = new Date();
-      const endTime = new Date(new Date().setDate(startTime.getDate() - 30));
+      // const startTime = new Date();
+      // const endTime = new Date(new Date().setDate(startTime.getDate() - 30));
 
-      getFuelUpEvents(car["id"], startTime.getTime(), endTime.getTime()).then(
-        (events) => {
-          setFuelUpEvents(events);
-        }
-      );
-      getMileageEvents(car["id"], startTime.getTime(), endTime.getTime()).then(
-        (events) => {
-          setMileageEvents(events);
-        }
-      );
+      getFuelUpEvents(
+        car["id"],
+        startDatePicker.valueOf(),
+        endDatePicker.valueOf()
+      ).then((events) => {
+        setFuelUpEvents(events);
+      });
+      getMileageEvents(
+        car["id"],
+        startDatePicker.valueOf(),
+        endDatePicker.valueOf()
+      ).then((events) => {
+        setMileageEvents(events);
+      });
     });
-  }, []);
+  }, [startDatePicker, endDatePicker]);
 
-  console.log({ startDatePicker, endDatePicker });
+  console.log({ startDatePicker, endDatePicker, newDate: dayjs().format() });
 
   const changeStartTime = (event) => {
-    console.log({ newTime: event.target.value });
-    if (event.target.value > endDatePicker.getTime()) {
-      setStartDatePicker(event.target.value);
+    // now we need to convert a string back into a dayjs object
+    const newTime = dayjs(event.target.value, "YYYY-MM-DDTHH:mm:ss", "au");
+
+    if (newTime > endDatePicker) {
+      setStartDatePicker(newTime);
     }
   };
 
   const changeEndTime = (event) => {
-    setEndDatePicker(event.target.value);
+    const newTime = dayjs(event.target.value, "YYYY-MM-DDTHH:mm:ss", "au");
+    if (newTime < startDatePicker) {
+      setEndDatePicker(newTime);
+    }
   };
 
   return (
@@ -70,6 +81,12 @@ export default function Report() {
           </div>
         ) : (
           <div>
+            <EventWindow
+              startTime={startDatePicker}
+              endTime={endDatePicker}
+              changeStartTime={changeStartTime}
+              changeEndTime={changeEndTime}
+            />
             {mileageEvents.length === 0 && fuelUpEvents.length === 0 ? (
               <>No events were found for this car</>
             ) : (
@@ -78,13 +95,6 @@ export default function Report() {
                   {mileageEvents.length + fuelUpEvents.length} events were found
                   for your {activeCar.make}!
                 </div>
-
-                <EventWindow
-                  startTime={startDatePicker}
-                  endTime={endDatePicker}
-                  changeStartTime={changeStartTime}
-                  changeEndTime={changeEndTime}
-                />
 
                 <MileageReport events={mileageEvents} />
                 <FuelReport events={fuelUpEvents} />
@@ -98,29 +108,13 @@ export default function Report() {
 }
 
 function EventWindow({ startTime, changeStartTime, endTime, changeEndTime }) {
-  const toIsoString = (date) => {
-    let pad = function (num) {
-      var norm = Math.floor(Math.abs(num));
-      return (norm < 10 ? "0" : "") + norm;
-    };
+  // we are going from UTC to ISO
+  const parsedStart = startTime
+    .format()
+    .substring(0, startTime.format().length - 6);
+  const parsedEnd = endTime.format().substring(0, endTime.format().length - 6);
 
-    return (
-      date.getFullYear() +
-      "-" +
-      pad(date.getMonth() + 1) +
-      "-" +
-      pad(date.getDate()) +
-      "T" +
-      pad(date.getHours()) +
-      ":" +
-      pad(date.getMinutes()) +
-      ":" +
-      pad(date.getSeconds())
-    );
-  };
-
-  const parsedStart = toIsoString(startTime);
-  const parsedEnd = toIsoString(endTime);
+  console.debug({ parsedStart, parsedEnd });
 
   return (
     <div className={styles.eventWindowGrid}>
@@ -131,7 +125,12 @@ function EventWindow({ startTime, changeStartTime, endTime, changeEndTime }) {
         onChange={changeStartTime}
       />
       <label>To:</label>
-      <input type="datetime-local" value={parsedEnd} onChange={changeEndTime} />
+      <input
+        type="datetime-local"
+        value={parsedEnd}
+        onChange={changeEndTime}
+        max={parsedStart}
+      />
     </div>
   );
 }
