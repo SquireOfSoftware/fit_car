@@ -12,6 +12,7 @@ import FuelUp from "./components/fuel/FuelUp";
 import EditCarPage from "./components/car/EditCarPage";
 import ViewCarsPage from "./components/car/ViewCarsPage";
 import AddCarPage from "./components/car/AddCarPage";
+import AddOilCheckPage from "./components/oil/AddOilCheckPage";
 
 const rootElement = document.getElementById("root");
 
@@ -19,13 +20,14 @@ ReactDOM.render(
   <BrowserRouter basename={process.env.PUBLIC_URL}>
     <Routes>
       <Route path="/" element={<App />}></Route>
-      <Route path="mileage/add" element={<AddNewMileage/>} />
-      <Route path="mileage" element={<ReadMileage/>} />
-      <Route path="fuel/add" element={<FuelUp/>} />
+      <Route path="mileage/add" element={<AddNewMileage />} />
+      <Route path="mileage" element={<ReadMileage />} />
+      <Route path="fuel/add" element={<FuelUp />} />
       <Route path="cars" element={<ViewCarsPage />} />
-      <Route path="cars/add" element={<AddCarPage/>} />
+      <Route path="cars/add" element={<AddCarPage />} />
       <Route path="cars/:carId/edit" element={<EditCarPage />} />
-      <Route path="report" element={<Report/>} />
+      <Route path="report" element={<Report />} />
+      <Route path="oil/add" element={<AddOilCheckPage />} />
     </Routes>
   </BrowserRouter>,
   rootElement
