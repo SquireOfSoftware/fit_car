@@ -2,12 +2,14 @@ export default function FuelReport({ events }) {
   return (
     <>
       <h2>Fuel</h2>
-      <div>{events.length} fuel events were found!</div>
-      <div>
-        {events.map((event, index) => (
-          <FuelEvent key={index} event={event} />
-        ))}
-      </div>
+      <details>
+        <summary>{events.length} fuel events were found!</summary>
+        <div>
+          {events.map((event, index) => (
+            <FuelEvent key={index} event={event} />
+          ))}
+        </div>
+      </details>
     </>
   );
 }
