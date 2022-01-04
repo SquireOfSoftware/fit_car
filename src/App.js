@@ -47,14 +47,14 @@ function App() {
             <Link to="/fuel/add">
               <FuelUpButton />
             </Link>
+            <Link to="/oil/add">
+              <AddOilCheckButton />
+            </Link>
             <Link to="/report">
               <ReportButton />
             </Link>
             <Link to="/cars">
               <ViewCarsButton />
-            </Link>
-            <Link to="/oil/add">
-              <AddOilCheckButton />
             </Link>
           </nav>
           <Outlet />

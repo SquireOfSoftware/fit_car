@@ -2,8 +2,10 @@ import { db } from "./../../db/DB";
 import styles from "./AddOilCheckPage.module.css";
 import sharedStyles from "../SharedCard.module.css";
 import sharedButtons from "../SharedButton.module.css";
+import { getActiveCar, getLastOilCheckEvent } from "../DBHelperFunctions";
+import dayjs from "dayjs";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Breadcrumb, { BreadcrumbIndicies } from "../breadcrumb/Breadcrumb";
 
 export default function AddOilCheckPage() {
@@ -11,6 +13,12 @@ export default function AddOilCheckPage() {
   const [oilPercentage, setOilPercentage] = useState(150);
   const [oilColour, setOilColour] = useState(20);
   const [oilText, setOilText] = useState(determineOpacityValue(oilColour));
+  const [activeCar, setActiveCar] = useState(undefined);
+
+  const [initialOilLevel, setInitialOilLevel] = useState(oilLevel);
+  const [initialOilColour, setInitialOilColour] = useState(oilColour);
+  const [initialOilPercentage, setInitialOilPercentage] =
+    useState(oilPercentage);
 
   const id = "container";
 
@@ -20,12 +28,37 @@ export default function AddOilCheckPage() {
     backgroundColor: getColour(oilColour),
   };
 
-  console.log({ currentStyle });
+  console.debug({ currentStyle });
+
+  useEffect(() => {
+    // find the active car
+    getActiveCar((car) => {
+      setActiveCar(car);
+      const currentTime = dayjs();
+
+      getLastOilCheckEvent(car["id"], currentTime.valueOf()).then((result) => {
+        const oilOpacity = result[0]["opacity"];
+        const oilPercentage = result[0]["percentage"];
+        setOilColour(oilOpacity);
+        setOilText(determineOpacityValue(oilOpacity));
+        setOilPercentage(oilPercentage);
+
+        setInitialOilColour(oilOpacity);
+        setInitialOilPercentage(oilPercentage);
+
+        const container = document.getElementById(id);
+        const computedPercentage =
+          container.offsetHeight * (1 - oilPercentage / 150);
+        setOilLevel(computedPercentage);
+        console.debug({ oilOpacity, oilPercentage, computedPercentage });
+
+        setInitialOilLevel(computedPercentage);
+      });
+    });
+  }, []);
 
   const changeOilColour = (event) => {
     let oilOpacity = event.target.value;
-
-    console.log({ oilOpacity });
     setOilColour(oilOpacity);
     setOilText(determineOpacityValue(oilOpacity));
   };
@@ -37,7 +70,7 @@ export default function AddOilCheckPage() {
       event.clientY - container.offsetParent.offsetTop - container.offsetTop;
     const computedPercentage =
       (1 - computedYCoord / container.offsetHeight) * 150;
-    console.log({
+    console.debug({
       computedPercentage,
       computedYCoord,
       clientY: event.clientY,
@@ -47,7 +80,21 @@ export default function AddOilCheckPage() {
     setOilPercentage(computedPercentage);
   };
 
-  const handleSave = () => {};
+  const resetOilLevel = () => {
+    setOilLevel(initialOilLevel);
+    setOilPercentage(initialOilPercentage);
+    setOilColour(initialOilColour);
+  };
+
+  const handleSave = () => {
+    const timeUtc = dayjs().valueOf();
+    db.oilChecks.add({
+      timeUtc,
+      carId: activeCar["id"],
+      percentage: oilPercentage,
+      opacity: oilColour,
+    });
+  };
 
   return (
     <>
@@ -65,9 +112,6 @@ export default function AddOilCheckPage() {
           onClick={changeOilLevel}
         >
           <div className={styles.gasLevel} style={currentStyle}></div>
-          <div
-            className={[styles.hundredFiftyMark, styles.minorMark].join(" ")}
-          ></div>
           <div
             className={[styles.hundredFortyMark, styles.minorMark].join(" ")}
           ></div>
@@ -139,6 +183,18 @@ export default function AddOilCheckPage() {
       >
         Add Oil Check
       </button>
+      {oilLevel !== initialOilLevel || oilColour !== initialOilColour ? (
+        <button
+          className={[sharedButtons.button, styles.resetOilCheckButton].join(
+            " "
+          )}
+          onClick={resetOilLevel}
+        >
+          Reset oil check
+        </button>
+      ) : (
+        ""
+      )}
     </>
   );
 }

@@ -44,6 +44,7 @@
   top: 20px;
   background-color: goldenrod;
   z-index: -1;
+  transition: background 0.2s;
 }
 
 .container {
@@ -55,6 +56,10 @@
   width: 100%;
   background-color: rgb(37, 147, 238);
   color: white;
+}
+
+.resetOilCheckButton {
+    width: 100%;
 }
 
 .oilColourSlider {
