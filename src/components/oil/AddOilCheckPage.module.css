@@ -1,0 +1,116 @@
+.fuelTankContainer {
+  width: 14vmin;
+  height: 92vmin;
+  border: solid black;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  position: absolute;
+  overflow: hidden;
+}
+
+.minorMark {
+  height: 5.6vmin;
+  width: 2vmin;
+  border-bottom: solid black;
+}
+
+.minorMark:nth-child(18) {
+  border: none;
+}
+
+.majorMark {
+  height: 5.6vmin;
+  width: 4vmin;
+  border-bottom: solid black;
+}
+
+.hundredMark {
+  display: flex;
+}
+
+.hundredMark:after {
+  content: "full";
+  align-self: end;
+}
+
+.zeroMark:after {
+  content: "empty";
+}
+
+.gasLevel {
+  position: absolute;
+  width: 14vmin;
+  height: 100vmin;
+  top: 20px;
+  background-color: goldenrod;
+  z-index: -1;
+  transition: background 0.2s;
+}
+
+.container {
+  height: 95vmin;
+  padding-left: 10vmin;
+}
+
+.oilCheckButton {
+  width: 100%;
+  background-color: rgb(37, 147, 238);
+  color: white;
+}
+
+.resetOilCheckButton {
+  width: 100%;
+}
+
+.oilColourSlider {
+  width: 100%;
+}
+
+.warning {
+  background-color: yellow;
+  height: 2em;
+}
+
+.summary {
+  padding: 1em;
+}
+
+.animatedOilCheckButton {
+  background-color: gray;
+}
+
+.animatedOilCheckButton:hover,
+.animatedOilCheckButton:active {
+  background-color: #80a1c3;
+}
+
+.oilDrip {
+  color: gold;
+  filter: grayscale(1);
+
+  animation: changeColours 4s infinite alternate ease-in-out;
+  animation-play-state: paused;
+  transition: all 0.5s;
+}
+
+.animatedOilCheckButton:hover .oilDrip,
+.animatedOilCheckButton:active .oilDrip {
+  filter: none;
+  color: gold;
+  animation-play-state: running;
+}
+
+.animatedDrip {
+  position: absolute;
+  font-size: 8vmin;
+  right: 15vmin;
+}
+
+@keyframes changeColours {
+  0% {
+    color: lightgoldenrodyellow;
+  }
+  100% {
+    color: maroon;
+  }
+}

@@ -6,6 +6,7 @@ import { CarMakes, CarStyles } from "./CarInfo";
 import styles from "./AddCarPage.module.css";
 import sharedButton from "../SharedButton.module.css";
 import { db } from "./../../db/DB";
+import { useNavigate } from "react-router-dom";
 
 export default function AddCarPage() {
   const {
@@ -23,6 +24,7 @@ export default function AddCarPage() {
 
   const [activeCarCount, setActiveCarCount] = useState(0);
   const [redirectEnabled, setRedirect] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     db.cars
@@ -41,7 +43,7 @@ export default function AddCarPage() {
       // set it to true if this is your first car
       isActive: (activeCarCount === 0).toString(),
     };
-    console.log({ car });
+    console.debug({ car });
 
     if (activeCarCount === 0) {
       setActiveCarCount(1);
@@ -55,8 +57,7 @@ export default function AddCarPage() {
           setActiveCarCount(1);
         }
         setRedirect(true);
-        // we want to route back to the car listings
-        window.location.replace("/cars");
+        navigate("/");
       })
       .catch((error) => {
         console.warn(`Failed to write to the browser db: ${error}`);
@@ -99,7 +100,11 @@ export default function AddCarPage() {
         ]}
       />
       {redirectEnabled ? (
-        <>The new car has been created, redirecting back to the car listings</>
+        <>
+          <p>
+            The new car has been created, redirecting back to the car listings
+          </p>
+        </>
       ) : (
         <form className={styles.carForm} onSubmit={handleSubmit(addCar)}>
           <label htmlFor="name">Name: </label>

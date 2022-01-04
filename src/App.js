@@ -3,6 +3,7 @@ import { Outlet, Link } from "react-router-dom";
 import { AddMileageButton } from "./components/mileage/AddMileageForm";
 import { ReportButton } from "./components/events/Report";
 import { FuelUpButton } from "./components/fuel/FuelUp";
+import { AddOilCheckButton } from "./components/oil/AddOilCheckPage";
 import Breadcrumb from "./components/breadcrumb/Breadcrumb";
 import { ViewCarsButton } from "./components/car/ViewCarsPage";
 import { useState, useEffect } from "react";
@@ -45,6 +46,9 @@ function App() {
             </Link>
             <Link to="/fuel/add">
               <FuelUpButton />
+            </Link>
+            <Link to="/oil/add">
+              <AddOilCheckButton />
             </Link>
             <Link to="/report">
               <ReportButton />
