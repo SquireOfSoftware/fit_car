@@ -163,7 +163,8 @@
   border-left: 0.5vmin solid transparent;
   border-right: 0.5vmin solid transparent;
   border-top: 4.5vmin solid;
-  color: red;
+  color: maroon;
+  border-radius: 3vmin;
 }
 
 @keyframes rotateDial {
