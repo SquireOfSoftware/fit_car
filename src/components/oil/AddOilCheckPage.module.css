@@ -1,11 +1,71 @@
-#tickmarks {
+.fuelTankContainer {
+  width: 14vmin;
+  height: 92vmin;
+  border: solid black;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  position: absolute;
+  overflow: hidden;
+}
+
+.minorMark {
+  height: 5.6vmin;
+  width: 2vmin;
+  border-bottom: solid black;
+}
+
+.minorMark:nth-child(18) {
+  border: none;
+}
+
+.majorMark {
+  height: 5.6vmin;
+  width: 4vmin;
+  border-bottom: solid black;
+}
+
+.hundredMark {
   display: flex;
 }
 
-.oilLeveller {
-  width: 150px;
-  height: 20px;
-  margin: 0;
-  transform-origin: 75px 75px;
-  transform: rotate(-90deg);
+.hundredMark:after {
+  content: "full";
+  align-self: end;
+}
+
+.zeroMark:after {
+  content: "empty";
+}
+
+.gasLevel {
+  position: absolute;
+  width: 14vmin;
+  height: 100vmin;
+  top: 20px;
+  background-color: goldenrod;
+  z-index: -1;
+}
+
+.container {
+  height: 95vmin;
+  padding-left: 10vmin;
+}
+
+.oilCheckButton {
+  width: 100%;
+  background-color: rgb(37, 147, 238);
+  color: white;
+}
+
+.oilColourSlider {
+  width: 100%;
+}
+
+.warning {
+  background-color: yellow;
+  height: 2em;
+}
+
+.summary {
+  padding: 1em;
 }
