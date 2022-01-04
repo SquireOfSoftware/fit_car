@@ -45,6 +45,7 @@ export const BreadcrumbIndicies = {
   reports: "reports",
   cars: "cars",
   oil: "oil",
+  tires: "tires",
   add: "add",
   edit: "edit",
 };

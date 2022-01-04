@@ -1,0 +1,91 @@
+.button,
+.spareTireButton {
+  width: 100%;
+}
+
+.spareTireButton {
+  background-color: rgb(37, 147, 238);
+  color: white;
+}
+
+.tireGrid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto;
+  grid-gap: 2em;
+  justify-content: center;
+  width: 100%;
+}
+
+.newTirePressure {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.globalTireIncrementer,
+.topLeftTireIncrementer,
+.topRightTireIncrementer,
+.bottomLeftTireIncrementer,
+.bottomRightTireIncrementer {
+  display: flex;
+}
+
+.topLeftTireIncrementer,
+.topRightTireIncrementer {
+  grid-row-start: 1;
+  grid-row-end: 1;
+}
+
+.topLeftTireIncrementer {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.topRightTireIncrementer {
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+
+.bottomLeftTireIncrementer,
+.bottomRightTireIncrementer {
+  grid-row-start: 2;
+  grid-row-end: 2;
+}
+
+.topLeftTireIncrementer {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.bottomRightTireIncrementer {
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+
+.previousTireHeading {
+  grid-row-start: 2;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.tireIncrementer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tireIncrementer > div {
+  display: flex;
+}
+
+.saveTirePressureButton,
+.resetTirePressureButton {
+  width: 100%;
+}
+
+.saveTirePressureButton {
+  color: white;
+  background-color: rgb(37, 147, 238);
+}

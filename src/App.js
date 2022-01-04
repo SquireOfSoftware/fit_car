@@ -8,6 +8,7 @@ import Breadcrumb from "./components/breadcrumb/Breadcrumb";
 import { ViewCarsButton } from "./components/car/ViewCarsPage";
 import { useState, useEffect } from "react";
 import { db } from "./db/DB";
+import { AddTireCheckButton } from "./components/tire/AddTireCheckPage";
 
 function App() {
   const [activeCar, setActiveCar] = useState(undefined);
@@ -49,6 +50,9 @@ function App() {
             </Link>
             <Link to="/oil/add">
               <AddOilCheckButton />
+            </Link>
+            <Link to="/tires/add">
+              <AddTireCheckButton />
             </Link>
             <Link to="/report">
               <ReportButton />

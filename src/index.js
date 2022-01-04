@@ -13,6 +13,7 @@ import EditCarPage from "./components/car/EditCarPage";
 import ViewCarsPage from "./components/car/ViewCarsPage";
 import AddCarPage from "./components/car/AddCarPage";
 import AddOilCheckPage from "./components/oil/AddOilCheckPage";
+import AddTireCheckPage from "./components/tire/AddTireCheckPage";
 
 const rootElement = document.getElementById("root");
 
@@ -28,6 +29,7 @@ ReactDOM.render(
       <Route path="cars/:carId/edit" element={<EditCarPage />} />
       <Route path="report" element={<Report />} />
       <Route path="oil/add" element={<AddOilCheckPage />} />
+      <Route path="tires/add" element={<AddTireCheckPage />} />
     </Routes>
   </BrowserRouter>,
   rootElement

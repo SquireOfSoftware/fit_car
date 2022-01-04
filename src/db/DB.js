@@ -9,6 +9,8 @@ db.version(5).stores({
     "++id, [carId+timeUtc], carId, price, fuelType, previousTank, currentTank, timeUtc",
   events: "++id, carId, type, eventId, timeUtc",
   oilChecks: "++id, [carId+timeUtc], carId, timeUtc, percentage, opacity, note",
+  tirePressure:
+    "++id, [carId+timeUtc], topLeft, topRight, bottomLeft, bottomRight, carId, timeUtc",
 });
 // injecting test data
 // db.cars.add({
