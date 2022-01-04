@@ -66,3 +66,12 @@ export function getFuelUpEvents(carId, start, end) {
       .sortBy("timeUtc");
   }
 }
+
+export function getLastOilCheckEvent(carId, timeStamp) {
+  return db.oilChecks
+    .where(["carId", "timeUtc"])
+    .belowOrEqual([carId, timeStamp])
+    .reverse()
+    .limit(1)
+    .sortBy("timeUtc");
+}
