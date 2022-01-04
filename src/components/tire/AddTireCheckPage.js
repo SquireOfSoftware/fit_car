@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Breadcrumb, { BreadcrumbIndicies } from "../breadcrumb/Breadcrumb";
 
 import styles from "./AddTireCheckPage.module.css";
 import sharedStyles from "../SharedCard.module.css";
 import sharedButtons from "../SharedButton.module.css";
 import NumberIncrementer from "../mileage/NumberIncrementer";
+
+import {
+  getActiveCar,
+  getLastTireCheckEvent,
+  addTireCheckEvent,
+} from "../DBHelperFunctions";
+import dayjs from "dayjs";
 
 export default function AddTireCheckPage() {
   const [currentTirePressure, setCurrentTirePressure] = useState({
@@ -15,7 +22,33 @@ export default function AddTireCheckPage() {
   });
   const [initialTirePressure, setInitialTirePressure] =
     useState(currentTirePressure);
-  const [globalTirePressure, setGlobalTirePressure] = useState(0);
+  const [globalTirePressure, setGlobalTirePressure] = useState(30);
+  const [initialGlobalTirePressure, setInitialGlobalTirePressure] =
+    useState(globalTirePressure);
+  const [activeCar, setActiveCar] = useState(undefined);
+
+  useEffect(() => {
+    getActiveCar((car) => {
+      const currentTime = dayjs();
+      setActiveCar(car);
+      getLastTireCheckEvent(car["id"], currentTime.valueOf()).then((events) => {
+        if (events.length !== 0) {
+          const currentPressure = events[0]["pressure"];
+          setGlobalTirePressure(currentPressure);
+          setInitialGlobalTirePressure(currentPressure);
+          const initialPressure = {
+            topLeft: currentPressure,
+            topRight: currentPressure,
+            bottomLeft: currentPressure,
+            bottomRight: currentPressure,
+          };
+          console.debug({ initialPressure, events });
+          setInitialTirePressure(initialPressure);
+          setCurrentTirePressure(initialPressure);
+        }
+      });
+    });
+  }, []);
 
   const setCurrentTire = (value, key) => {
     const newTirePressure = { ...currentTirePressure, [key]: value };
@@ -29,22 +62,33 @@ export default function AddTireCheckPage() {
   const handleSave = () => {
     // save to db
     // then set current tire pressure and initial tire pressure to global
-    const newTirePressure = {
-      topLeft: globalTirePressure,
-      topRight: globalTirePressure,
-      bottomLeft: globalTirePressure,
-      bottomRight: globalTirePressure,
-    };
-    setCurrentTirePressure(newTirePressure);
-    setInitialTirePressure(newTirePressure);
+
+    addTireCheckEvent({
+      ...currentTirePressure,
+      pressure: globalTirePressure,
+      carId: activeCar["id"],
+    }).then((ids) => {
+      const newTirePressure = {
+        topLeft: globalTirePressure,
+        topRight: globalTirePressure,
+        bottomLeft: globalTirePressure,
+        bottomRight: globalTirePressure,
+      };
+      setCurrentTirePressure(newTirePressure);
+      setInitialTirePressure(newTirePressure);
+      setInitialGlobalTirePressure(globalTirePressure);
+    });
   };
 
   const resetTirePressure = () => {
     setCurrentTirePressure(initialTirePressure);
+    setGlobalTirePressure(initialGlobalTirePressure);
   };
 
   const hasChanged = () => {
-    const hasChanged = currentTirePressure !== initialTirePressure;
+    const hasChanged =
+      currentTirePressure !== initialTirePressure ||
+      globalTirePressure !== initialGlobalTirePressure;
     return hasChanged;
   };
 
@@ -95,24 +139,27 @@ export default function AddTireCheckPage() {
         />
       </div>
 
-      <button
-        className={[sharedButtons.button, styles.saveTirePressureButton].join(
-          " "
-        )}
-        onClick={handleSave}
-      >
-        Add tire check
-      </button>
       {hasChanged() ? (
-        <button
-          className={[
-            sharedButtons.button,
-            styles.resetTirePressureButton,
-          ].join(" ")}
-          onClick={resetTirePressure}
-        >
-          Reset tire check
-        </button>
+        <>
+          <button
+            className={[
+              sharedButtons.button,
+              styles.saveTirePressureButton,
+            ].join(" ")}
+            onClick={handleSave}
+          >
+            Add tire check
+          </button>
+          <button
+            className={[
+              sharedButtons.button,
+              styles.resetTirePressureButton,
+            ].join(" ")}
+            onClick={resetTirePressure}
+          >
+            Reset tire check
+          </button>
+        </>
       ) : (
         ""
       )}
@@ -121,7 +168,10 @@ export default function AddTireCheckPage() {
 }
 
 function TirePressure({ numericValue, callback, customClass, label }) {
-  let stringifiedValue = numericValue.toString().padStart(2, "0");
+  let stringifiedValue =
+    numericValue !== undefined
+      ? numericValue.toString().padStart(2, "0")
+      : "00";
 
   const incrementNumber = (value, index) => {
     let newValue = value + Math.pow(10, index);
