@@ -1,4 +1,5 @@
 import { db } from "../db/DB";
+import dayjs from "dayjs";
 
 export function getActiveCar(callback) {
   return db.cars.where({ isActive: "true" }).toArray((cars) => {
@@ -70,8 +71,25 @@ export function getFuelUpEvents(carId, start, end) {
 export function getLastOilCheckEvent(carId, timeStamp) {
   return db.oilChecks
     .where(["carId", "timeUtc"])
-    .belowOrEqual([carId, timeStamp])
+    .between([carId, 0], [carId, timeStamp])
     .reverse()
     .limit(1)
     .sortBy("timeUtc");
+}
+
+export function getLastTireCheckEvent(carId, timeStamp) {
+  return db.tireChecks
+    .where(["carId", "timeUtc"])
+    .between([carId, 0], [carId, timeStamp])
+    .reverse()
+    .limit(1)
+    .sortBy("timeUtc");
+}
+
+export function addTireCheckEvent(event) {
+  const timeUtc = dayjs().valueOf();
+  return db.tireChecks.add({
+    ...event,
+    timeUtc,
+  });
 }

@@ -1,0 +1,182 @@
+.button,
+.spareTireButton {
+  width: 100%;
+}
+
+.spareTireButton {
+  background-color: rgb(37, 147, 238);
+  color: white;
+}
+
+.tireGrid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto;
+  grid-gap: 2em;
+  justify-content: center;
+  width: 100%;
+}
+
+.newTirePressure {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.globalTireIncrementer,
+.topLeftTireIncrementer,
+.topRightTireIncrementer,
+.bottomLeftTireIncrementer,
+.bottomRightTireIncrementer {
+  display: flex;
+}
+
+.topLeftTireIncrementer,
+.topRightTireIncrementer {
+  grid-row-start: 1;
+  grid-row-end: 1;
+}
+
+.topLeftTireIncrementer {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.topRightTireIncrementer {
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+
+.bottomLeftTireIncrementer,
+.bottomRightTireIncrementer {
+  grid-row-start: 2;
+  grid-row-end: 2;
+}
+
+.topLeftTireIncrementer {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.bottomRightTireIncrementer {
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+
+.previousTireHeading {
+  grid-row-start: 2;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.tireIncrementer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tireIncrementer > div {
+  display: flex;
+}
+
+.saveTirePressureButton,
+.resetTirePressureButton {
+  width: 100%;
+}
+
+.saveTirePressureButton {
+  color: white;
+  background-color: rgb(37, 147, 238);
+}
+
+.tireCheckCard {
+  filter: grayscale(1);
+  transition: all 0.2s ease;
+  background-color: slategray;
+}
+
+.tireCheckTitle {
+  transition: all 0.4s ease;
+}
+
+.tireCheckCard:hover {
+  filter: none;
+}
+
+.tireCheckCard:hover .tireCheckTitle {
+  color: floralwhite;
+}
+
+.drawing {
+  position: absolute;
+  bottom: -11vmin;
+  right: -4vmin;
+}
+
+.circleTire {
+  width: 20vmin;
+  height: 20vmin;
+  border-radius: 50%;
+  background-color: darkslateblue;
+}
+
+.circleRim {
+  width: 15vmin;
+  height: 15vmin;
+
+  position: absolute;
+  bottom: 2vmin;
+  right: 2vmin;
+  border-radius: 50%;
+  background-color: slateblue;
+}
+
+.pump {
+  width: 9vmin;
+  height: 9vmin;
+  border-radius: 50%;
+  background-color: silver;
+  position: absolute;
+  bottom: 16vmin;
+  right: 20vmin;
+}
+
+.pumpPipe {
+  width: 3vmin;
+  height: 7vmin;
+  bottom: 14.5vmin;
+  right: 19vmin;
+  transform: rotate(127deg);
+  position: absolute;
+  background-color: silver;
+}
+
+.dial {
+  filter: grayscale(1);
+  bottom: 14.5vmin;
+  right: 23vmin;
+  position: absolute;
+  animation: rotateDial 3s ease-in-out alternate infinite;
+  animation-play-state: paused;
+  transform-origin: top right;
+  border-left: 0.5vmin solid transparent;
+  border-right: 0.5vmin solid transparent;
+  border-top: 4.5vmin solid;
+  color: maroon;
+  border-radius: 3vmin;
+}
+
+@keyframes rotateDial {
+  0% {
+    transform: rotate(70deg);
+  }
+  100% {
+    transform: rotate(170deg);
+  }
+}
+
+.tireCheckCard:hover .dial {
+  filter: none;
+  animation-play-state: running;
+}

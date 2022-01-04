@@ -16,6 +16,7 @@ export default function AddOilCheckPage() {
   const [oilPercentage, setOilPercentage] = useState(150);
   const [oilColour, setOilColour] = useState(20);
   const [oilText, setOilText] = useState(determineOpacityValue(oilColour));
+  const [oilAction, setOilAction] = useState(OilAction.topUp);
   const [activeCar, setActiveCar] = useState(undefined);
 
   const [initialOilLevel, setInitialOilLevel] = useState(oilLevel);
@@ -40,22 +41,24 @@ export default function AddOilCheckPage() {
       const currentTime = dayjs();
 
       getLastOilCheckEvent(car["id"], currentTime.valueOf()).then((result) => {
-        const oilOpacity = result[0]["opacity"];
-        const oilPercentage = result[0]["percentage"];
-        setOilColour(oilOpacity);
-        setOilText(determineOpacityValue(oilOpacity));
-        setOilPercentage(oilPercentage);
+        if (result.length !== 0) {
+          const oilOpacity = result[0]["opacity"];
+          const oilPercentage = result[0]["percentage"];
+          setOilColour(oilOpacity);
+          setOilText(determineOpacityValue(oilOpacity));
+          setOilPercentage(oilPercentage);
 
-        setInitialOilColour(oilOpacity);
-        setInitialOilPercentage(oilPercentage);
+          setInitialOilColour(oilOpacity);
+          setInitialOilPercentage(oilPercentage);
 
-        const container = document.getElementById(id);
-        const computedPercentage =
-          container.offsetHeight * (1 - oilPercentage / 150);
-        setOilLevel(computedPercentage);
-        console.debug({ oilOpacity, oilPercentage, computedPercentage });
+          const container = document.getElementById(id);
+          const computedPercentage =
+            container.offsetHeight * (1 - oilPercentage / 150);
+          setOilLevel(computedPercentage);
+          console.debug({ oilOpacity, oilPercentage, computedPercentage });
 
-        setInitialOilLevel(computedPercentage);
+          setInitialOilLevel(computedPercentage);
+        }
       });
     });
   }, []);
@@ -89,13 +92,25 @@ export default function AddOilCheckPage() {
     setOilColour(initialOilColour);
   };
 
+  const changeOilAction = (event) => {
+    setOilAction(event.target.value);
+  };
+
   const handleSave = () => {
     const timeUtc = dayjs().valueOf();
-    db.oilChecks.add({
+    const newOilCheck = {
       timeUtc,
       carId: activeCar["id"],
       percentage: oilPercentage,
       opacity: oilColour,
+      action: oilAction,
+    };
+    console.debug({ newOilCheck });
+    db.oilChecks.add(newOilCheck).then((_) => {
+      setInitialOilColour(oilColour);
+      setInitialOilLevel(oilLevel);
+      setInitialOilPercentage(oilPercentage);
+      setOilAction(OilAction.topUp);
     });
   };
 
@@ -168,6 +183,13 @@ export default function AddOilCheckPage() {
         )}
       </div>
       <div>
+        <label>This is an oil change</label>
+        <OilActionDropdDown
+          changeOilAction={changeOilAction}
+          selectedOilAction={oilAction}
+        />
+      </div>
+      <div>
         <h2>Oil colour</h2>
         <input
           type="range"
@@ -180,21 +202,24 @@ export default function AddOilCheckPage() {
           step="10"
         />
       </div>
-      <button
-        className={[sharedButtons.button, styles.oilCheckButton].join(" ")}
-        onClick={handleSave}
-      >
-        Add Oil Check
-      </button>
+
       {oilLevel !== initialOilLevel || oilColour !== initialOilColour ? (
-        <button
-          className={[sharedButtons.button, styles.resetOilCheckButton].join(
-            " "
-          )}
-          onClick={resetOilLevel}
-        >
-          Reset oil check
-        </button>
+        <>
+          <button
+            className={[sharedButtons.button, styles.oilCheckButton].join(" ")}
+            onClick={handleSave}
+          >
+            Add Oil Check
+          </button>
+          <button
+            className={[sharedButtons.button, styles.resetOilCheckButton].join(
+              " "
+            )}
+            onClick={resetOilLevel}
+          >
+            Reset oil check
+          </button>
+        </>
       ) : (
         ""
       )}
@@ -224,6 +249,34 @@ function getColour(opacity) {
     return "black";
   }
 }
+
+function OilActionDropdDown({ changeOilAction, selectedOilAction }) {
+  return (
+    <div className={styles.fuelTypeDropdown}>
+      <label htmlFor="fuelType">Fuel Type: </label>
+      <select
+        id="fuelType"
+        name="fuelType"
+        className={styles.fuelTypeOption}
+        onChange={changeOilAction}
+        value={selectedOilAction}
+      >
+        {Object.keys(OilAction).map((oilActionEnum, index) => {
+          return (
+            <option value={oilActionEnum} key={index}>
+              {oilActionEnum}
+            </option>
+          );
+        })}
+      </select>
+    </div>
+  );
+}
+
+const OilAction = {
+  topUp: "topUp",
+  oilChange: "oilChange",
+};
 
 export function AddOilCheckButton() {
   return (
