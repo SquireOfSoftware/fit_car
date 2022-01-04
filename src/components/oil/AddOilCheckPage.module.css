@@ -59,7 +59,7 @@
 }
 
 .resetOilCheckButton {
-    width: 100%;
+  width: 100%;
 }
 
 .oilColourSlider {
@@ -73,4 +73,44 @@
 
 .summary {
   padding: 1em;
+}
+
+.animatedOilCheckButton {
+  background-color: gray;
+}
+
+.animatedOilCheckButton:hover,
+.animatedOilCheckButton:active {
+  background-color: #80a1c3;
+}
+
+.oilDrip {
+  color: gold;
+  filter: grayscale(1);
+
+  animation: changeColours 4s infinite alternate ease-in-out;
+  animation-play-state: paused;
+  transition: all 0.5s;
+}
+
+.animatedOilCheckButton:hover .oilDrip,
+.animatedOilCheckButton:active .oilDrip {
+  filter: none;
+  color: gold;
+  animation-play-state: running;
+}
+
+.animatedDrip {
+  position: absolute;
+  font-size: 8vmin;
+  right: 15vmin;
+}
+
+@keyframes changeColours {
+  0% {
+    color: lightgoldenrodyellow;
+  }
+  100% {
+    color: maroon;
+  }
 }

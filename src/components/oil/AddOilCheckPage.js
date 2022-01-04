@@ -8,6 +8,9 @@ import dayjs from "dayjs";
 import { useState, useEffect } from "react";
 import Breadcrumb, { BreadcrumbIndicies } from "../breadcrumb/Breadcrumb";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTint } from "@fortawesome/free-solid-svg-icons";
+
 export default function AddOilCheckPage() {
   const [oilLevel, setOilLevel] = useState(0);
   const [oilPercentage, setOilPercentage] = useState(150);
@@ -225,8 +228,18 @@ function getColour(opacity) {
 export function AddOilCheckButton() {
   return (
     <div className={[sharedStyles.cardButton].join(" ")}>
-      <div className={[sharedStyles.animatedCard].join(" ")}>
-        <div className={[sharedStyles.animatedCardText].join(" ")}>
+      <div
+        className={[
+          sharedStyles.animatedCard,
+          styles.animatedOilCheckButton,
+        ].join(" ")}
+      >
+        <div className={styles.animatedDrip}>
+          <FontAwesomeIcon className={styles.oilDrip} icon={faTint} />
+        </div>
+        <div
+          className={[sharedStyles.animatedCardText, styles.cardText].join(" ")}
+        >
           Add Oil Check
         </div>
       </div>
