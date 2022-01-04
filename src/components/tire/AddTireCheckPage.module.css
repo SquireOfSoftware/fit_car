@@ -89,3 +89,93 @@
   color: white;
   background-color: rgb(37, 147, 238);
 }
+
+.tireCheckCard {
+  filter: grayscale(1);
+  transition: all 0.2s ease;
+  background-color: slategray;
+}
+
+.tireCheckTitle {
+  transition: all 0.4s ease;
+}
+
+.tireCheckCard:hover {
+  filter: none;
+}
+
+.tireCheckCard:hover .tireCheckTitle {
+  color: floralwhite;
+}
+
+.drawing {
+  position: absolute;
+  bottom: -11vmin;
+  right: -4vmin;
+}
+
+.circleTire {
+  width: 20vmin;
+  height: 20vmin;
+  border-radius: 50%;
+  background-color: darkslateblue;
+}
+
+.circleRim {
+  width: 15vmin;
+  height: 15vmin;
+
+  position: absolute;
+  bottom: 2vmin;
+  right: 2vmin;
+  border-radius: 50%;
+  background-color: slateblue;
+}
+
+.pump {
+  width: 9vmin;
+  height: 9vmin;
+  border-radius: 50%;
+  background-color: silver;
+  position: absolute;
+  bottom: 16vmin;
+  right: 20vmin;
+}
+
+.pumpPipe {
+  width: 3vmin;
+  height: 7vmin;
+  bottom: 14.5vmin;
+  right: 19vmin;
+  transform: rotate(127deg);
+  position: absolute;
+  background-color: silver;
+}
+
+.dial {
+  filter: grayscale(1);
+  bottom: 14.5vmin;
+  right: 23vmin;
+  position: absolute;
+  animation: rotateDial 3s ease-in-out alternate infinite;
+  animation-play-state: paused;
+  transform-origin: top right;
+  border-left: 0.5vmin solid transparent;
+  border-right: 0.5vmin solid transparent;
+  border-top: 4.5vmin solid;
+  color: red;
+}
+
+@keyframes rotateDial {
+  0% {
+    transform: rotate(70deg);
+  }
+  100% {
+    transform: rotate(170deg);
+  }
+}
+
+.tireCheckCard:hover .dial {
+  filter: none;
+  animation-play-state: running;
+}

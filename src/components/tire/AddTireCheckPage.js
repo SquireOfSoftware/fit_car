@@ -233,8 +233,22 @@ const TirePositions = {
 export function AddTireCheckButton() {
   return (
     <div className={[sharedStyles.cardButton].join(" ")}>
-      <div className={[sharedStyles.animatedCard].join(" ")}>
-        <div className={[sharedStyles.animatedCardText].join(" ")}>
+      <div
+        className={[sharedStyles.animatedCard, styles.tireCheckCard].join(" ")}
+      >
+        <div className={styles.drawing}>
+          <div className={styles.pump}></div>
+          <div className={styles.pumpPipe}></div>
+          <div className={styles.circleTire}></div>
+          <div className={styles.dial}></div>
+          <div className={styles.circleRim}></div>
+        </div>
+        <div
+          className={[
+            sharedStyles.animatedCardText,
+            styles.tireCheckTitle,
+          ].join(" ")}
+        >
           Add Tire Check
         </div>
       </div>
